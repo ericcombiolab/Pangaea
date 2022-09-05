@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from ast import arg
 import os
 DEFAULT_PROCESSES = os.cpu_count()
 os.environ["MKL_NUM_THREADS"] = str(DEFAULT_PROCESSES)
