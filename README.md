@@ -1,7 +1,7 @@
 # Pangaea
 Pangaea is a linked-read assembler for linked-reads with high specificity, using the variational autoencoder to binning linked-reads and multi-thresholding reassembly to assemble linked-reads.
  ## Installation
-Pangaea depends on numpy, pandas, sklearn, snakemake, pysam, torch, rph_kmeans, bwa, samtools, seqtk, megahit, spades, flye, quickmerge, jgi_summarize_bam_contig_depths.
+Pangaea depends on [numpy](https://numpy.org/install/), [pandas](https://pandas.pydata.org/docs/getting_started/install.html), [sklearn](https://scikit-learn.org/stable/install.html), [snakemake](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html), [pysam](https://pysam.readthedocs.io/en/latest/installation.html), [torch](https://pytorch.org/get-started/locally/), [rph_kmeans](https://github.com/tinglabs/rph_kmeans), [bwa](https://github.com/lh3/bwa), [samtools](https://github.com/samtools/samtools), [seqtk](https://github.com/lh3/seqtk), [megahit](https://github.com/voutcn/megahit), [spades(>=v3.15.3)](https://github.com/ablab/spades), [flye](https://github.com/fenderglass/Flye), [quickmerge](https://github.com/mahulchak/quickmerge), and[jgi_summarize_bam_contig_depths](https://bitbucket.org/berkeleylab/metabat/src/master/).
 
 To install Pangaea, use the following script:
 ```
@@ -9,7 +9,15 @@ git clone git@github.com:ericcombiolab/Pangaea.git
 cd Pangaea/cpptools && make
 ```
 
-## Running
+## Preprocesing of linked-reads
+Run metaspades to obtain error-corrected reads:
+```
+metaspades.py --12 /path/to/reads -o /path/to/metaspades/out
+```
+The reads1 (input to Pangaea ```-1```), reads2 (input to Pangaea ```-2```) are in ```/path/to/metaspades/out/corrected/``` and spades contigs (input to Pangaea ```-sp```) are at ```/path/to/metaspades/out/contigs.fasta```
+
+Run athena tp obtain local assembly contigs and athena contigs. The local assembly contigs (input to Pangaea ```-lc```) and athena contigs (input to Pangaea ```-at```) are ```/path/to/athena/out/results/olc/flye-input-contigs.fa``` and ```/path/to/athena/out/results/olc/athena.asm.fa```.
+## Running Pangaea
 ```
 pangaea.py [-h] -1 READS1 -2 READS2 -o OUTPUT [-l MIN_LENGTH] [-k KMER]
                   [-s WINDOW_SIZE] [-v VECTOR_SIZE] [-r LR] [-w WEIGHT_DECAY]
