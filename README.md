@@ -1,7 +1,7 @@
 # Pangaea
 Pangaea is a linked-read assembler for linked-reads with high barcode specificity, using the variational autoencoder to bin linked-reads and multi-thresholding reassembly to assemble linked-reads.
  ## Installation
-Pangaea depends on [numpy](https://numpy.org/install/), [pandas](https://pandas.pydata.org/docs/getting_started/install.html), [sklearn](https://scikit-learn.org/stable/install.html), [snakemake](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html), [pysam](https://pysam.readthedocs.io/en/latest/installation.html), [torch](https://pytorch.org/get-started/locally/), [rph_kmeans](https://github.com/tinglabs/rph_kmeans), [bwa](https://github.com/lh3/bwa), [samtools](https://github.com/samtools/samtools), [seqtk](https://github.com/lh3/seqtk), [megahit](https://github.com/voutcn/megahit), [spades(>=v3.15.3)](https://github.com/ablab/spades), [flye](https://github.com/fenderglass/Flye), [quickmerge](https://github.com/mahulchak/quickmerge), and [jgi_summarize_bam_contig_depths](https://bitbucket.org/berkeleylab/metabat/src/master/).
+Pangaea depends on [numpy](https://numpy.org/install/), [pandas](https://pandas.pydata.org/docs/getting_started/install.html), [sklearn](https://scikit-learn.org/stable/install.html), [snakemake](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html), [pysam](https://pysam.readthedocs.io/en/latest/installation.html), [torch](https://pytorch.org/get-started/locally/), [rph_kmeans](https://github.com/tinglabs/rph_kmeans), [pigz](https://zlib.net/pigz/), [bwa](https://github.com/lh3/bwa), [samtools](https://github.com/samtools/samtools), [seqtk](https://github.com/lh3/seqtk), [megahit](https://github.com/voutcn/megahit), [spades(>=v3.15.3)](https://github.com/ablab/spades), [flye](https://github.com/fenderglass/Flye), [quickmerge](https://github.com/mahulchak/quickmerge), and [jgi_summarize_bam_contig_depths](https://bitbucket.org/berkeleylab/metabat/src/master/).
 
 To install Pangaea, use the following script:
 ```
@@ -74,4 +74,10 @@ optional arguments:
                         path to athena contigs
   -lt LOW_ABD_CUT, --low_abd_cut LOW_ABD_CUT
                         coverage for low abundance contigs
+```
+
+## Example of running Pangaea
+Under folder ```example```, pangaea was run with
+```
+nohup pangaea.py -1 reads1.fq.gz -2 reads2.fq.gz -sp contigs.fa -lc flye-input-contigs.fa -at athena.asm.fa -c 5 -o pangaea > pangaea.log 2>&1 &
 ```
