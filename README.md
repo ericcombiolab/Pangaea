@@ -9,7 +9,7 @@ git clone git@github.com:ericcombiolab/Pangaea.git
 cd Pangaea/cpptools && make
 ```
 
-## Preprocesing of linked-reads
+## Preprocessing of linked-reads
 Run metaspades to obtain error-corrected reads:
 ```
 metaspades.py --12 /path/to/reads -o /path/to/metaspades/out
