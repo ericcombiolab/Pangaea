@@ -28,10 +28,10 @@ class VAENET:
             self.network = nn.DataParallel(self.network, device_ids=range(num_gpus))
             self.network = self.network.module
 
-    def train(self, train_loader, val_loader, dataloader, root, patience):
-        model_path = os.path.join(root, "2.vae")
+    def train(self, train_loader, val_loader, dataloader, model_path, patience):
         if not os.path.isdir(model_path):
-            run_cmd(["mkdir", model_path])
+            # raise Exception and return
+            raise Exception("model path not exist")
         train_model = os.path.join(model_path, "train_model.pk")
         early = EarlyStopping(patience=patience, delta=1e-6, path=train_model)
         if not os.path.exists(train_model):
@@ -91,6 +91,7 @@ class VAENET:
                         break
 
                 if early.early_stop:
+                    logging.info("early stop triggered")
                     break
                 self.network.eval()
                 total_loss_val = []
@@ -119,23 +120,38 @@ class VAENET:
 
         barcodes = []
         embedding = []
-        latent_path = os.path.join(model_path, "latent")
-        self.network.load_state_dict(torch.load(train_model))
-        self.network.eval()
-        with torch.no_grad():
-            for data in dataloader:
-                abd = data["abd"]
-                tnf = data["tnf"]
-                if self.cuda:
-                    abd = abd.cuda()
-                    tnf = tnf.cuda()
-                embedding.append(self.network.emebdding(abd, tnf).detach().cpu().numpy())
-                barcodes.extend(data["bc"])
-        embedding = np.concatenate(embedding, axis=0)
-        np.savez(latent_path, embedding)
-        labels = clustering_rph_kmeans(embedding, self.num_classes)
+        latent_path = os.path.join(model_path, "latent.npz")
+        barcodes_path = os.path.join(model_path, "barcodes.npz")
+        if not os.path.exists(latent_path) or not os.path.exists(barcodes_path):
+            self.network.load_state_dict(torch.load(train_model))
+            self.network.eval()
+            with torch.no_grad():
+                for data in dataloader:
+                    abd = data["abd"]
+                    tnf = data["tnf"]
+                    if self.cuda:
+                        abd = abd.cuda()
+                        tnf = tnf.cuda()
+                    embedding.append(self.network.emebdding(abd, tnf).detach().cpu().numpy())
+                    barcodes.extend(data["bc"])
+            embedding = np.concatenate(embedding, axis=0)
+            np.savez(barcodes_path, barcodes)
+            np.savez(latent_path, embedding)
+        else:
+            logging.info("latent and barcodes already saved")
+        # new a file show model finished
+        with open(os.path.join(model_path, "model_finished"), "w") as f:
+            f.write("model finished")
+            
+            #list(data.keys())
+        #     embedding = np.load(latent_path)['arr_0']
+        #     barcodes = np.load(barcodes_path)['arr_0']
+        # logging.info("embedding.shape:")
+        # logging.info(embedding.shape)
 
-        return labels, barcodes
+        # labels = clustering_rph_kmeans(embedding, self.num_classes)
+
+        # return embedding, barcodes
 
     def unlabeled_loss(self, out_net):
         abd = out_net["abd"]
