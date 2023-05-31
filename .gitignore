@@ -1,0 +1,24 @@
+metaspades_out/**
+athena_meta_megahit/**
+**/__pycache__/**
+pangaea/**
+# bin/**
+example/hybrid/*out/*
+example/hybrid/intermediate_files/*
+example/hybrid/quast_results*
+.vscode/**
+.snakemake/**
+quast_results/**
+logs/**
+out_*/**
+binnings/**
+hybrid/**
+temp/**
+longreads
+bin/count_kmer
+bin/count_tnf
+bin/extract_reads
+bin/extract_unmapped
+bin/parse_header
+.nfs0000010a8913a85000065db8
+*log

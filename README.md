@@ -76,8 +76,15 @@ optional arguments:
                         coverage for low abundance contigs
 ```
 
-## Example of running Pangaea
-Under folder ```example```, pangaea was run with
+## Example of running Pangaea on linked reads
+Under folder ```example/pangaea_out```, pangaea was run with
 ```
-nohup pangaea.py -1 reads1.fq.gz -2 reads2.fq.gz -sp contigs.fa -lc flye-input-contigs.fa -at athena.asm.fa -c 5 -o pangaea > pangaea.log 2>&1 &
+cd example
+nohup python ../pangaea.py -1 reads1.fq.gz -2 reads2.fq.gz -sp contigs.fa -lc flye-input-contigs.fa -at athena.asm.fa -c 5 -o pangaea > pangaea.log 2>&1 &
+```
+
+## Example of running Pangaea on hybrid reads (short pairend reads and longreads)
+```
+cd example/hybrid
+./hybrid_wrapper.sh atcc_longreads_small.fastq atcc_short_R1.fastq.gz atcc_short_R2.fastq.gz 60 operams > logs/log
 ```

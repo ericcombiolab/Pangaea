@@ -1,9 +1,9 @@
 #!/bin/bash
 cluster_dir=$1
 assembly_dir=$2
-reads1=$3
-reads2=$4
-thread=$5
+thread=$3
+reads1=$4
+reads2=$5
 BINDIR=$(dirname "$0")
 num_jobs="\j"
 
@@ -33,7 +33,13 @@ if [ ! -f $assembly_dir/contigs.megahit.name_sorted.bam ]; then
     if [ ! -f $cluster_dir/contigs.megahit.fa.amb ]; then
         bwa index $cluster_dir/contigs.megahit.fa
     fi
-    bwa mem -t $thread $cluster_dir/contigs.megahit.fa $reads1 $reads2 | samtools sort -@ $thread -o $assembly_dir/contigs.megahit.bam
+    # if $reads2 is empty, then it is interleaved pair-end reads
+    if [ -z $reads2 ]; then
+        bwa mem -p -t $thread $cluster_dir/contigs.megahit.fa $reads1 | samtools sort -@ $thread -o $assembly_dir/contigs.megahit.bam     
+    else
+        bwa mem -t $thread $cluster_dir/contigs.megahit.fa $reads1 $reads2 | samtools sort -@ $thread -o $assembly_dir/contigs.megahit.bam
+    fi
+
     jgi_summarize_bam_contig_depths --outputDepth $assembly_dir/contigs.megahit.depth $assembly_dir/contigs.megahit.bam &
     samtools sort -n -@ $thread $assembly_dir/contigs.megahit.bam -o $assembly_dir/contigs.megahit.name_sorted.bam &
     wait

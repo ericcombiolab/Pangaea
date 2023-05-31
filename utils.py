@@ -52,9 +52,29 @@ class EarlyStopping:
         self.val_loss_min = val_loss
 
 
-def run_cmd(command):
+def run_cmd_with_pipe(command, pipe_file=None):
+    if not pipe_file:
+        log_pipe = subprocess.DEVNULL
+    else:
+        # get pipe_file pipe
+        log_pipe = open(pipe_file, "a")
     logging.info("command started: " + " ".join(command))
-    ret = subprocess.run(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    # run command and check return code and save log to log_file
+    ret = subprocess.run(command, stdout=log_pipe, stderr=log_pipe)
+    if ret.returncode:
+        logging.error("command failed: " + " ".join(command))
+        sys.exit(1)
+    logging.info("command completed: " + " ".join(command))
+
+def run_cmd(command, log_file=None):
+    if not log_file:
+        log_pipe = subprocess.DEVNULL
+    else:
+        # get log_file pipe
+        log_pipe = open(log_file, "a")
+    logging.info("command started: " + " ".join(command))
+    # run command and check return code and save log to log_file
+    ret = subprocess.run(command, stdout= subprocess.DEVNULL, stderr=log_pipe)
     if ret.returncode:
         logging.error("command failed: " + " ".join(command))
         sys.exit(1)

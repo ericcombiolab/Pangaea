@@ -22,6 +22,7 @@ fi
 athena=`realpath $athena`
 cd $assembly_dir/quickmerge
 
+# quickmerge
 merge_wrapper.py ../contigs.low_abd.binning.local.asm/final.asm.fa $athena
 $BINDIR/parse_header merged_out.fasta contig_ > merged_out.renamed.fasta
 mv merged_out.renamed.fasta merged_out.fasta
