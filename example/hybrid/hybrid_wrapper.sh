@@ -2,7 +2,6 @@
 set -o pipefail
 set -e
 echo "`date` starting"
-conda_path="/home/comp/zmzhang/software/anaconda3"
 # cd ../../cpptools/;make ;cd -
 longreads=$1
 short_R1=$2
@@ -142,13 +141,6 @@ if [ ! -f $athena_lc ] || [ ! -f $athena_out ];then
     ./run_athena.sh interleaved_link_reads.sorted.fastq metaspades_out/contigs.fasta athena_out $threads > logs/athena.log 2>&1 &
 fi
 
-source ${conda_path}/bin/activate xiaojin_pangaea
-if [ $CONDA_DEFAULT_ENV == "xiaojin_pangaea" ];then
-    echo "`date "+%Y-%m-%d %H:%M:%S"` xiaojin_pangaea activated"
-else
-    echo "`date "+%Y-%m-%d %H:%M:%S"` xiaojin_pangaea not activated"
-    exit
-fi
 
 python ../../pangaea.py -i interleaved_link_reads.sorted.fastq  -md vae -tnf_k 4 -c 15 -lt 10,30 -st 1,2,3 -o pangaea_out &
 
