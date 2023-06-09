@@ -120,6 +120,7 @@ optional arguments:
 ## Example of running Pangaea on linked reads
 Under folder ```example/pangaea_out```, pangaea was run with
 ```
+conda activate pangaea
 cd example
 nohup python ../pangaea.py -1 reads1.fq.gz -2 reads2.fq.gz -sp contigs.fa -lc flye-input-contigs.fa -at athena.asm.fa -c 5 -o pangaea > pangaea.log 2>&1 &
 ```
