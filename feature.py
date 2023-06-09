@@ -20,6 +20,7 @@ class Feature:
         self.threads = args.threads
         self.count_kmer = os.path.join(script_path, "bin", "count_kmer")
         self.count_tnf = os.path.join(script_path, "bin", "count_tnf")
+        self.jellyfish = os.path.join(script_path, "third_parties/jellyfish_pkg/bin", "jellyfish")
         self.feature_dir = os.path.join(args.output, "1.features")
         if not os.path.isdir(self.feature_dir):
             run_cmd(["mkdir", self.feature_dir])
@@ -71,10 +72,10 @@ class Feature:
         if not os.path.isfile(out_count):
             logging.info("caculate abundance : "+out_count )
             if self.args.reads1 and self.args.reads2:
-                command = ["jellyfish", "count","<(pigz -dc "+self.args.reads1+ self.args.reads2+") -t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count]
+                command = [self.jellyfish, "count","<(pigz -dc "+self.args.reads1+ self.args.reads2+") -t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count]
                 logging.info("command started: " + " ".join(command))
                 pipe = subprocess.Popen(["pigz", "-dc", self.args.reads1, self.args.reads2], stdout=subprocess.PIPE)
-                subprocess.check_output(["jellyfish", "count", "-t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count, "--min-qual-char=?", "/dev/fd/0", ], stdin=pipe.stdout)
+                subprocess.check_output([self.jellyfish, "count", "-t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count, "--min-qual-char=?", "/dev/fd/0", ], stdin=pipe.stdout)
                 pipe.communicate()
                 logging.info("command completed: " + " ".join(command))
 
@@ -83,7 +84,7 @@ class Feature:
                 if self.args.long_reads.endswith(".gz"):
                     out_fq = os.path.join(self.feature_dir, "long_reads.fq")
                     run_cmd_with_pipe(["pigz", "-dc", self.args.long_reads], out_fq)
-                    run_cmd(["jellyfish", "count", out_fq, "-t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count])
+                    run_cmd([self.jellyfish, "count", out_fq, "-t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count])
                     # self.args.long_reads = out_fq
 
                 # remove the fq file
@@ -96,7 +97,7 @@ class Feature:
                     run_cmd_with_pipe(["pigz", "-dc", self.args.interleaved_reads], out_fq)
                 else:
                     out_fq = self.args.interleaved_reads
-                run_cmd(["jellyfish", "count", out_fq, "-t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count])
+                run_cmd([self.jellyfish, "count", out_fq, "-t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count])
                 if self.args.interleaved_reads.endswith(".gz"):
                     run_cmd(["rm", out_fq])
                 # logging.info("command completed: " + " ".join(command))
@@ -106,7 +107,7 @@ class Feature:
             
         if not os.path.isfile(out_dump):
             logging.info("dump abundance : "+out_dump )
-            run_cmd(["jellyfish", "dump", "-c", "-t", out_count, "-o", out_dump])
+            run_cmd([self.jellyfish, "dump", "-c", "-t", out_count, "-o", out_dump])
         if not os.path.isfile(out_freq):
             logging.info("caculate frequency : "+out_freq )
             if self.args.reads1 and self.args.reads2:

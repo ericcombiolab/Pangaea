@@ -2,7 +2,7 @@
 set -o pipefail
 set -e
 echo "`date` starting"
-# cd ../../cpptools/;make ;cd -
+cd ../../cpptools/;make ;cd -
 longreads=$1
 short_R1=$2
 short_R2=$3
@@ -19,6 +19,8 @@ if [ -f contigs/athena.asm.fa ] && [ -f contigs/flye-input-contigs.fa ];then
     athena_lc=`pwd`'/contigs/flye-input-contigs.fa'
     athena_out=`pwd`'/contigs/athena.asm.fa'
 fi
+echo "athena_lc: $athena_lc"
+echo "athena_out: $athena_out"
 
 # print command
 echo "$0 $*"
@@ -63,6 +65,15 @@ fi
 if [ ! -f $short_R2 ]; then
     echo "short_R2 $short_R2 not found"
     exit 1
+fi
+
+if [[ $longreads == *.gz ]];then
+    echo "unzip $longreads"
+    if [ -f ${longreads%.gz} ];then
+        rm ${longreads%.gz}
+    fi
+    gunzip -k $longreads
+    longreads=${longreads%.gz}
 fi
 
 if [ ! -f $barcode_list ];then
@@ -156,12 +167,12 @@ if [ ! -f $athena_lc ];then
     exit 1
 fi
 
-if [ ! -f ./athena_out/results/olc/athena.asm.fa ];then
-    echo "contigs ./athena_out/results/olc/athena.asm.fa not found"
+if [ ! -f $athena_out ];then
+    echo "contigs $athena_out not found"
     exit 1
 fi
 
-python $root/pangaea.py -i interleaved_link_reads.sorted.fastq  -md vae -tnf_k 4 -c 15 -lt 10,30 -sp ./contigs/$type.fasta -lc $athena_lc -at ./athena_out/results/olc/athena.asm.fa -st 4 -o pangaea_out
+python $root/pangaea.py -i interleaved_link_reads.sorted.fastq  -md vae -tnf_k 4 -c 15 -lt 10,30 -sp ./contigs/$type.fasta -lc $athena_lc -at $athena_out -st 4 -o pangaea_out
 
 
 echo "`date` all done!"

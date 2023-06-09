@@ -2,10 +2,13 @@
 Pangaea is a linked-read assembler for linked-reads with high barcode specificity, using the variational autoencoder to bin linked-reads and multi-thresholding reassembly to assemble linked-reads.
 
 ## Installation
-git clone git@github.com:ericcombiolab/Pangaea.git
-
+```
+git clone https://github.com/ericcombiolab/Pangaea.git
+cd Pangaea
+./build.sh
+```
 ### Dependencies
-Pangaea depends on [numpy](https://numpy.org/install/), [pandas](https://pandas.pydata.org/docs/getting_started/install.html), [sklearn](https://scikit-learn.org/stable/install.html), [snakemake](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html), [pysam](https://pysam.readthedocs.io/en/latest/installation.html), [torch](https://pytorch.org/get-started/locally/), [rph_kmeans](https://github.com/tinglabs/rph_kmeans), [pigz](https://zlib.net/pigz/), [bwa](https://github.com/lh3/bwa), [samtools](https://github.com/samtools/samtools), [seqtk](https://github.com/lh3/seqtk), [megahit](https://github.com/voutcn/megahit), [spades(>=v3.15.3)](https://github.com/ablab/spades), [flye](https://github.com/fenderglass/Flye), [quickmerge](https://github.com/mahulchak/quickmerge), and [jgi_summarize_bam_contig_depths](https://bitbucket.org/berkeleylab/metabat/src/master/).
+Pangaea depends on [numpy](https://numpy.org/install/), [pandas](https://pandas.pydata.org/docs/getting_started/install.html), [sklearn](https://scikit-learn.org/stable/install.html), [snakemake](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html), [pysam](https://pysam.readthedocs.io/en/latest/installation.html), [torch](https://pytorch.org/get-started/locally/), [rph_kmeans](https://github.com/tinglabs/rph_kmeans), [pigz](https://zlib.net/pigz/), [bwa](https://github.com/lh3/bwa), [samtools](https://github.com/samtools/samtools), [seqtk](https://github.com/lh3/seqtk), [megahit](https://github.com/voutcn/megahit), [spades(>=v3.15.3)](https://github.com/ablab/spades), [flye](https://github.com/fenderglass/Flye), [quickmerge](https://github.com/mahulchak/quickmerge), [Jellyfish-2.3.0](https://github.com/gmarcais/Jellyfish)and [jgi_summarize_bam_contig_depths](https://bitbucket.org/berkeleylab/metabat/src/master/).
 
 ### Installation using conda 
 ```
@@ -124,8 +127,7 @@ nohup python ../pangaea.py -1 reads1.fq.gz -2 reads2.fq.gz -sp contigs.fa -lc fl
 ## Example of running Pangaea on hybrid reads (short pairend reads and longreads)
 ```
 cd example/hybrid
-./hybrid_wrapper.sh atcc_longreads_small.fastq atcc_short_R1.fastq.gz atcc_short_R2.fastq.gz 60 operams > logs/log
-
+./hybrid_wrapper.sh atcc_longreads_small.fastq.gz atcc_short_R1.fastq.gz atcc_short_R2.fastq.gz 60 operams > logs/log 2>&1
 ```
 ###  Optional: Substituted the metaSPAdes in step 1 and Athena in step 2 with the corresponding hybrid assemblies (contigs generated from hybridSPAdes or OPERA-MS)
 ```
