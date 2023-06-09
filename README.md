@@ -10,7 +10,7 @@ cd Pangaea
 ### Dependencies
 Pangaea depends on [numpy](https://numpy.org/install/), [pandas](https://pandas.pydata.org/docs/getting_started/install.html), [sklearn](https://scikit-learn.org/stable/install.html), [snakemake](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html), [pysam](https://pysam.readthedocs.io/en/latest/installation.html), [torch](https://pytorch.org/get-started/locally/), [rph_kmeans](https://github.com/tinglabs/rph_kmeans), [pigz](https://zlib.net/pigz/), [bwa](https://github.com/lh3/bwa), [samtools](https://github.com/samtools/samtools), [seqtk](https://github.com/lh3/seqtk), [megahit](https://github.com/voutcn/megahit), [spades(>=v3.15.3)](https://github.com/ablab/spades), [flye](https://github.com/fenderglass/Flye), [quickmerge](https://github.com/mahulchak/quickmerge), [Jellyfish-2.3.0](https://github.com/gmarcais/Jellyfish)and [jgi_summarize_bam_contig_depths](https://bitbucket.org/berkeleylab/metabat/src/master/).
 
-### Installation using conda 
+### Installation using conda （not needed if you have run ```./build.sh``` ）
 ```
 conda env create -f environment.yaml
 conda activate pangaea
@@ -21,7 +21,7 @@ conda activate athena
 ```
 Note that if you want to run Athena/Pangaea, you need to change conda enviroments accrodingly. 
 
-### Compile cpp utils of Pangaea
+### Compile cpp utils of Pangaea （not needed if you have run ```./build.sh``` ）
 ```
 cd Pangaea/cpptools && make && cd -
 ```
