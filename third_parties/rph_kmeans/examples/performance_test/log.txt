@@ -1,0 +1,568 @@
+
+running rp_kmeans_py_densex_imp_None -------------------------
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9371167021836289, proj_num = 5
+Reduced point number 382 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 382
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9215717389924907, proj_num = 5
+Reduced point number 457 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 457
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.959181332218213, proj_num = 5
+Reduced point number 368 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 368
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.8740490579404974, proj_num = 5
+Reduced point number 528 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 528
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.8844850642430371, proj_num = 5
+Reduced point number 408 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 408
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9056060212925039, proj_num = 5
+Reduced point number 693 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 693
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9119738437252052, proj_num = 5
+Reduced point number 435 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 435
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9515899402686538, proj_num = 5
+Reduced point number 288 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 288
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9374273664514567, proj_num = 5
+Reduced point number 412 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 412
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9330640942873522, proj_num = 5
+Reduced point number 585 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 585
+rp_kmeans_py_densex_imp_None: 
+{'CLUSTER_REAL_TIME': '0.249 (0.131)', 'CLUSTER_CPU_TIME': '0.247 (0.131)', 'ARI': '0.997 (0.000)', 'NMI': '0.992 (0.000)'}
+
+running rp_kmeans_py_densex_imp_radius -------------------------
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9091657191101694, proj_num = 5
+Reduced point number 496 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 496
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9584284660033819, proj_num = 5
+Reduced point number 420 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 420
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9558228531628751, proj_num = 5
+Reduced point number 461 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 461
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9686790040931377, proj_num = 5
+Reduced point number 509 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 509
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9544481861918983, proj_num = 5
+Reduced point number 551 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 551
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9301593244885701, proj_num = 5
+Reduced point number 572 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 572
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9329266779628389, proj_num = 5
+Reduced point number 648 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 648
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9359834984576636, proj_num = 5
+Reduced point number 489 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 489
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.8976996985318157, proj_num = 5
+Reduced point number 516 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 516
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9317586238856641, proj_num = 5
+Reduced point number 497 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 497
+rp_kmeans_py_densex_imp_radius: 
+{'CLUSTER_REAL_TIME': '0.684 (0.358)', 'CLUSTER_CPU_TIME': '0.684 (0.358)', 'ARI': '0.997 (0.000)', 'NMI': '0.992 (0.000)'}
+
+running rp_kmeans_py_densex_imp_min_bkt_size -------------------------
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9367011629696855, proj_num = 5
+Reduced point number 1945 <= max_point 2000. Iteration stop.
+Total iteration = 5; Number of reduced points = 1945
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9441992180350367, proj_num = 5
+Reduced point number 1931 <= max_point 2000. Iteration stop.
+Total iteration = 6; Number of reduced points = 1931
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.941083697963613, proj_num = 5
+Reduced point number 1517 <= max_point 2000. Iteration stop.
+Total iteration = 6; Number of reduced points = 1517
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.983773693304375, proj_num = 5
+Reduced point number 1703 <= max_point 2000. Iteration stop.
+Total iteration = 7; Number of reduced points = 1703
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9115008271424337, proj_num = 5
+Reduced point number 1754 <= max_point 2000. Iteration stop.
+Total iteration = 7; Number of reduced points = 1754
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9553924248762746, proj_num = 5
+Reduced point number 1888 <= max_point 2000. Iteration stop.
+Total iteration = 5; Number of reduced points = 1888
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9084109460036894, proj_num = 5
+Reduced point number 1883 <= max_point 2000. Iteration stop.
+Total iteration = 6; Number of reduced points = 1883
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.907168465935019, proj_num = 5
+Reduced point number 1563 <= max_point 2000. Iteration stop.
+Total iteration = 8; Number of reduced points = 1563
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.905268738194918, proj_num = 5
+Reduced point number 1800 <= max_point 2000. Iteration stop.
+Total iteration = 6; Number of reduced points = 1800
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.8825895993376717, proj_num = 5
+Reduced point number 1481 <= max_point 2000. Iteration stop.
+Total iteration = 5; Number of reduced points = 1481
+rp_kmeans_py_densex_imp_min_bkt_size: 
+{'CLUSTER_REAL_TIME': '0.445 (0.236)', 'CLUSTER_CPU_TIME': '0.445 (0.236)', 'ARI': '0.846 (0.303)', 'NMI': '0.898 (0.189)'}
+
+running rp_kmeans_py_densex_imp_min_center_dist -------------------------
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9086774839299068, proj_num = 5
+Reduced point number 1938 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1938
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 1.0079697431730095, proj_num = 5
+Reduced point number 1586 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1586
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9151834071854497, proj_num = 5
+Reduced point number 1950 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1950
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.964570329099097, proj_num = 5
+Reduced point number 1101 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1101
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9402113023863126, proj_num = 5
+Reduced point number 1609 <= max_point 2000. Iteration stop.
+Total iteration = 3; Number of reduced points = 1609
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9583158764105558, proj_num = 5
+Reduced point number 1732 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1732
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.8823660545161132, proj_num = 5
+Reduced point number 1260 <= max_point 2000. Iteration stop.
+Total iteration = 3; Number of reduced points = 1260
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9053016931073365, proj_num = 5
+Reduced point number 1313 <= max_point 2000. Iteration stop.
+Total iteration = 3; Number of reduced points = 1313
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9316295834409365, proj_num = 5
+Reduced point number 1942 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1942
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9432126163596379, proj_num = 5
+Reduced point number 1551 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1551
+rp_kmeans_py_densex_imp_min_center_dist: 
+{'CLUSTER_REAL_TIME': '0.534 (0.272)', 'CLUSTER_CPU_TIME': '0.534 (0.272)', 'ARI': '0.997 (0.000)', 'NMI': '0.992 (0.000)'}
+
+running rp_kmeans_py_sparsex_imp_None -------------------------
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9432379988672992, proj_num = 5
+Reduced point number 437 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 437
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9763844067349347, proj_num = 5
+Reduced point number 628 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 628
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9305527108204857, proj_num = 5
+Reduced point number 619 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 619
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9714193631060695, proj_num = 5
+Reduced point number 603 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 603
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9082441309807573, proj_num = 5
+Reduced point number 470 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 470
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9734021184999788, proj_num = 5
+Reduced point number 194 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 194
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.95919183199573, proj_num = 5
+Reduced point number 350 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 350
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9884255774096364, proj_num = 5
+Reduced point number 484 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 484
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9027390059111569, proj_num = 5
+Reduced point number 546 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 546
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9219363975052977, proj_num = 5
+Reduced point number 328 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 328
+rp_kmeans_py_sparsex_imp_None: 
+{'CLUSTER_REAL_TIME': '1.187 (0.586)', 'CLUSTER_CPU_TIME': '1.187 (0.586)', 'ARI': '0.997 (0.000)', 'NMI': '0.992 (0.000)'}
+
+running rp_kmeans_py_sparsex_imp_radius -------------------------
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9400944466392116, proj_num = 5
+Reduced point number 363 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 363
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9541040253619212, proj_num = 5
+Reduced point number 454 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 454
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.937522951569986, proj_num = 5
+Reduced point number 743 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 743
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9166808927686378, proj_num = 5
+Reduced point number 643 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 643
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9552861471863001, proj_num = 5
+Reduced point number 469 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 469
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9349550484424736, proj_num = 5
+Reduced point number 509 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 509
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 1.005437379568785, proj_num = 5
+Reduced point number 468 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 468
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9336050198277309, proj_num = 5
+Reduced point number 472 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 472
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9575712147916553, proj_num = 5
+Reduced point number 391 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 391
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9248712447910941, proj_num = 5
+Reduced point number 630 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 630
+rp_kmeans_py_sparsex_imp_radius: 
+{'CLUSTER_REAL_TIME': '22.093 (11.509)', 'CLUSTER_CPU_TIME': '22.091 (11.508)', 'ARI': '0.997 (0.000)', 'NMI': '0.992 (0.000)'}
+
+running rp_kmeans_py_sparsex_imp_min_bkt_size -------------------------
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9879196821289018, proj_num = 5
+Reduced point number 1948 <= max_point 2000. Iteration stop.
+Total iteration = 5; Number of reduced points = 1948
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9742269878470065, proj_num = 5
+Reduced point number 1773 <= max_point 2000. Iteration stop.
+Total iteration = 7; Number of reduced points = 1773
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9265420880406315, proj_num = 5
+Reduced point number 1797 <= max_point 2000. Iteration stop.
+Total iteration = 5; Number of reduced points = 1797
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9275540094230379, proj_num = 5
+Reduced point number 1736 <= max_point 2000. Iteration stop.
+Total iteration = 6; Number of reduced points = 1736
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9672886308114621, proj_num = 5
+Reduced point number 1900 <= max_point 2000. Iteration stop.
+Total iteration = 5; Number of reduced points = 1900
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.948236420470888, proj_num = 5
+Reduced point number 1670 <= max_point 2000. Iteration stop.
+Total iteration = 6; Number of reduced points = 1670
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.8764916117719741, proj_num = 5
+Reduced point number 1773 <= max_point 2000. Iteration stop.
+Total iteration = 7; Number of reduced points = 1773
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9138254864637572, proj_num = 5
+Reduced point number 1897 <= max_point 2000. Iteration stop.
+Total iteration = 5; Number of reduced points = 1897
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9400085266807201, proj_num = 5
+Reduced point number 1409 <= max_point 2000. Iteration stop.
+Total iteration = 7; Number of reduced points = 1409
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9624841745069637, proj_num = 5
+Reduced point number 1755 <= max_point 2000. Iteration stop.
+Total iteration = 6; Number of reduced points = 1755
+rp_kmeans_py_sparsex_imp_min_bkt_size: 
+{'CLUSTER_REAL_TIME': '1.117 (0.609)', 'CLUSTER_CPU_TIME': '1.116 (0.609)', 'ARI': '0.997 (0.000)', 'NMI': '0.992 (0.000)'}
+
+running rp_kmeans_py_sparsex_imp_min_center_dist -------------------------
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9058442605457842, proj_num = 5
+Reduced point number 1604 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1604
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9178947927814114, proj_num = 5
+Reduced point number 1233 <= max_point 2000. Iteration stop.
+Total iteration = 3; Number of reduced points = 1233
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9024750322743356, proj_num = 5
+Reduced point number 1937 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1937
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.941741482179622, proj_num = 5
+Reduced point number 319 <= max_point 2000. Iteration stop.
+Total iteration = 3; Number of reduced points = 319
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9785518142606575, proj_num = 5
+Reduced point number 810 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 810
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9162936701193316, proj_num = 5
+Reduced point number 1241 <= max_point 2000. Iteration stop.
+Total iteration = 3; Number of reduced points = 1241
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9004766247075948, proj_num = 5
+Reduced point number 1410 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1410
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.8859825261347181, proj_num = 5
+Reduced point number 550 <= max_point 2000. Iteration stop.
+Total iteration = 3; Number of reduced points = 550
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.940952222778882, proj_num = 5
+Reduced point number 1427 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1427
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.968744436646834, proj_num = 5
+Reduced point number 1804 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1804
+rp_kmeans_py_sparsex_imp_min_center_dist: 
+{'CLUSTER_REAL_TIME': '3.584 (1.879)', 'CLUSTER_CPU_TIME': '3.584 (1.879)', 'ARI': '0.997 (0.000)', 'NMI': '0.992 (0.000)'}
+
+running rp_kmeans_cy_densex_imp_None -------------------------
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.90548969588645, proj_num = 5
+Reduced point number 577 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 577
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9069124472943335, proj_num = 5
+Reduced point number 446 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 446
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9447100667592202, proj_num = 5
+Reduced point number 878 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 878
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.8896952772312949, proj_num = 5
+Reduced point number 402 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 402
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9143030884524586, proj_num = 5
+Reduced point number 420 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 420
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9635817347501829, proj_num = 5
+Reduced point number 487 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 487
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9172935941638967, proj_num = 5
+Reduced point number 420 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 420
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.959180399226476, proj_num = 5
+Reduced point number 147 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 147
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.8972000186125393, proj_num = 5
+Reduced point number 599 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 599
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9203571902559669, proj_num = 5
+Reduced point number 296 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 296
+rp_kmeans_cy_densex_imp_None: 
+{'CLUSTER_REAL_TIME': '0.208 (0.105)', 'CLUSTER_CPU_TIME': '0.206 (0.105)', 'ARI': '0.997 (0.000)', 'NMI': '0.992 (0.000)'}
+
+running rp_kmeans_cy_densex_imp_radius -------------------------
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.8837389309486876, proj_num = 5
+Reduced point number 530 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 530
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9210529617001886, proj_num = 5
+Reduced point number 541 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 541
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9529987909129924, proj_num = 5
+Reduced point number 469 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 469
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.92778041033009, proj_num = 5
+Reduced point number 458 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 458
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9449541287720211, proj_num = 5
+Reduced point number 567 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 567
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9216486363334757, proj_num = 5
+Reduced point number 547 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 547
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.90086939427518, proj_num = 5
+Reduced point number 624 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 624
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9556940107681561, proj_num = 5
+Reduced point number 480 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 480
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9015639139808584, proj_num = 5
+Reduced point number 462 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 462
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9053413011533417, proj_num = 5
+Reduced point number 604 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 604
+rp_kmeans_cy_densex_imp_radius: 
+{'CLUSTER_REAL_TIME': '0.211 (0.111)', 'CLUSTER_CPU_TIME': '0.211 (0.111)', 'ARI': '0.997 (0.000)', 'NMI': '0.992 (0.000)'}
+
+running rp_kmeans_cy_densex_imp_min_bkt_size -------------------------
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.935898791622057, proj_num = 5
+Reduced point number 1537 <= max_point 2000. Iteration stop.
+Total iteration = 7; Number of reduced points = 1537
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9247556996246507, proj_num = 5
+Reduced point number 1551 <= max_point 2000. Iteration stop.
+Total iteration = 6; Number of reduced points = 1551
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.8976155300851609, proj_num = 5
+Reduced point number 1916 <= max_point 2000. Iteration stop.
+Total iteration = 6; Number of reduced points = 1916
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.938934833512361, proj_num = 5
+Reduced point number 1917 <= max_point 2000. Iteration stop.
+Total iteration = 7; Number of reduced points = 1917
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9134523117028904, proj_num = 5
+Reduced point number 1701 <= max_point 2000. Iteration stop.
+Total iteration = 6; Number of reduced points = 1701
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9587993515306916, proj_num = 5
+Reduced point number 1879 <= max_point 2000. Iteration stop.
+Total iteration = 6; Number of reduced points = 1879
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9200886909347259, proj_num = 5
+Reduced point number 1993 <= max_point 2000. Iteration stop.
+Total iteration = 5; Number of reduced points = 1993
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 1.0060667591121364, proj_num = 5
+Reduced point number 1853 <= max_point 2000. Iteration stop.
+Total iteration = 6; Number of reduced points = 1853
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9052756547948035, proj_num = 5
+Reduced point number 1389 <= max_point 2000. Iteration stop.
+Total iteration = 7; Number of reduced points = 1389
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9448524225232249, proj_num = 5
+Reduced point number 1949 <= max_point 2000. Iteration stop.
+Total iteration = 6; Number of reduced points = 1949
+rp_kmeans_cy_densex_imp_min_bkt_size: 
+{'CLUSTER_REAL_TIME': '0.334 (0.179)', 'CLUSTER_CPU_TIME': '0.334 (0.179)', 'ARI': '0.921 (0.229)', 'NMI': '0.945 (0.141)'}
+
+running rp_kmeans_cy_densex_imp_min_center_dist -------------------------
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9232165798082884, proj_num = 5
+Reduced point number 1851 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1851
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9602203075947604, proj_num = 5
+Reduced point number 1800 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1800
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.8956056795775451, proj_num = 5
+Reduced point number 1603 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1603
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9695542782204368, proj_num = 5
+Reduced point number 1225 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1225
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9593393764185312, proj_num = 5
+Reduced point number 1785 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1785
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9286191789385863, proj_num = 5
+Reduced point number 1310 <= max_point 2000. Iteration stop.
+Total iteration = 3; Number of reduced points = 1310
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9510461568567143, proj_num = 5
+Reduced point number 1275 <= max_point 2000. Iteration stop.
+Total iteration = 3; Number of reduced points = 1275
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9129354163867929, proj_num = 5
+Reduced point number 1728 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1728
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9271189929398153, proj_num = 5
+Reduced point number 1764 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1764
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9350918822341681, proj_num = 5
+Reduced point number 1612 <= max_point 2000. Iteration stop.
+Total iteration = 3; Number of reduced points = 1612
+rp_kmeans_cy_densex_imp_min_center_dist: 
+{'CLUSTER_REAL_TIME': '0.497 (0.254)', 'CLUSTER_CPU_TIME': '0.497 (0.254)', 'ARI': '0.997 (0.000)', 'NMI': '0.992 (0.000)'}
+
+running rp_kmeans_cy_sparsex_imp_None -------------------------
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9505235494985642, proj_num = 5
+Reduced point number 534 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 534
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9257662431202498, proj_num = 5
+Reduced point number 491 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 491
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9415727357523235, proj_num = 5
+Reduced point number 210 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 210
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9392285347963434, proj_num = 5
+Reduced point number 379 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 379
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9289523101137258, proj_num = 5
+Reduced point number 441 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 441
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9365480130782774, proj_num = 5
+Reduced point number 632 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 632
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9540810284992833, proj_num = 5
+Reduced point number 272 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 272
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9201903731220251, proj_num = 5
+Reduced point number 366 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 366
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9554325426790018, proj_num = 5
+Reduced point number 756 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 756
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.929140265446532, proj_num = 5
+Reduced point number 363 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 363
+rp_kmeans_cy_sparsex_imp_None: 
+{'CLUSTER_REAL_TIME': '0.317 (0.170)', 'CLUSTER_CPU_TIME': '0.317 (0.170)', 'ARI': '0.997 (0.000)', 'NMI': '0.992 (0.000)'}
+
+running rp_kmeans_cy_sparsex_imp_radius -------------------------
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9181215668827876, proj_num = 5
+Reduced point number 491 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 491
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9100701268579603, proj_num = 5
+Reduced point number 363 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 363
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9002830339679975, proj_num = 5
+Reduced point number 485 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 485
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9321451588698986, proj_num = 5
+Reduced point number 534 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 534
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.8968503728263939, proj_num = 5
+Reduced point number 630 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 630
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9582681023719015, proj_num = 5
+Reduced point number 502 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 502
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9208786373716354, proj_num = 5
+Reduced point number 697 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 697
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9156334334588467, proj_num = 5
+Reduced point number 712 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 712
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9342159825664971, proj_num = 5
+Reduced point number 597 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 597
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9636710055179077, proj_num = 5
+Reduced point number 470 <= max_point 2000. Iteration stop.
+Total iteration = 1; Number of reduced points = 470
+rp_kmeans_cy_sparsex_imp_radius: 
+{'CLUSTER_REAL_TIME': '0.300 (0.161)', 'CLUSTER_CPU_TIME': '0.300 (0.161)', 'ARI': '0.997 (0.000)', 'NMI': '0.992 (0.000)'}
+
+running rp_kmeans_cy_sparsex_imp_min_bkt_size -------------------------
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9554948959395329, proj_num = 5
+Reduced point number 1952 <= max_point 2000. Iteration stop.
+Total iteration = 7; Number of reduced points = 1952
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9336187657644917, proj_num = 5
+Reduced point number 1610 <= max_point 2000. Iteration stop.
+Total iteration = 6; Number of reduced points = 1610
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9365999008408128, proj_num = 5
+Reduced point number 1984 <= max_point 2000. Iteration stop.
+Total iteration = 6; Number of reduced points = 1984
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9327937852379672, proj_num = 5
+Reduced point number 1834 <= max_point 2000. Iteration stop.
+Total iteration = 5; Number of reduced points = 1834
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9360731734502392, proj_num = 5
+Reduced point number 1977 <= max_point 2000. Iteration stop.
+Total iteration = 6; Number of reduced points = 1977
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9198851627796962, proj_num = 5
+Reduced point number 1721 <= max_point 2000. Iteration stop.
+Total iteration = 7; Number of reduced points = 1721
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.8945722610545015, proj_num = 5
+Reduced point number 1956 <= max_point 2000. Iteration stop.
+Total iteration = 6; Number of reduced points = 1956
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.8953844689290394, proj_num = 5
+Reduced point number 1767 <= max_point 2000. Iteration stop.
+Total iteration = 5; Number of reduced points = 1767
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9368177303255919, proj_num = 5
+Reduced point number 1620 <= max_point 2000. Iteration stop.
+Total iteration = 6; Number of reduced points = 1620
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9142665788121704, proj_num = 5
+Reduced point number 1350 <= max_point 2000. Iteration stop.
+Total iteration = 7; Number of reduced points = 1350
+rp_kmeans_cy_sparsex_imp_min_bkt_size: 
+{'CLUSTER_REAL_TIME': '0.491 (0.247)', 'CLUSTER_CPU_TIME': '0.491 (0.247)', 'ARI': '0.997 (0.000)', 'NMI': '0.992 (0.000)'}
+
+running rp_kmeans_cy_sparsex_imp_min_center_dist -------------------------
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9314387182451707, proj_num = 5
+Reduced point number 1521 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1521
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9238898319965498, proj_num = 5
+Reduced point number 385 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 385
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9371705413206683, proj_num = 5
+Reduced point number 1988 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1988
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9469751641407909, proj_num = 5
+Reduced point number 1992 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1992
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9435659694984999, proj_num = 5
+Reduced point number 1391 <= max_point 2000. Iteration stop.
+Total iteration = 3; Number of reduced points = 1391
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9313147609149068, proj_num = 5
+Reduced point number 1945 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1945
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9202133525301921, proj_num = 5
+Reduced point number 1980 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1980
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9402868031894658, proj_num = 5
+Reduced point number 987 <= max_point 2000. Iteration stop.
+Total iteration = 3; Number of reduced points = 987
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9458489743616376, proj_num = 5
+Reduced point number 1873 <= max_point 2000. Iteration stop.
+Total iteration = 2; Number of reduced points = 1873
+Iteration begin: X.shape = (5400, 2), max_point = 2000, w = 0.9590477772951627, proj_num = 5
+Reduced point number 997 <= max_point 2000. Iteration stop.
+Total iteration = 3; Number of reduced points = 997
+rp_kmeans_cy_sparsex_imp_min_center_dist: 
+{'CLUSTER_REAL_TIME': '2.860 (1.631)', 'CLUSTER_CPU_TIME': '2.860 (1.631)', 'ARI': '0.997 (0.000)', 'NMI': '0.992 (0.000)'}
+
+running kmeans_k-means++_1 -------------------------
+kmeans_k-means++_1: 
+{'CLUSTER_REAL_TIME': '0.074 (0.042)', 'CLUSTER_CPU_TIME': '0.074 (0.042)', 'ARI': '0.175 (0.062)', 'NMI': '0.441 (0.079)'}
+
+running kmeans_k-means++_5 -------------------------
+kmeans_k-means++_5: 
+{'CLUSTER_REAL_TIME': '0.325 (0.168)', 'CLUSTER_CPU_TIME': '0.325 (0.168)', 'ARI': '0.316 (0.227)', 'NMI': '0.570 (0.141)'}
+
+running kmeans_k-means++_10 -------------------------
+kmeans_k-means++_10: 
+{'CLUSTER_REAL_TIME': '0.636 (0.318)', 'CLUSTER_CPU_TIME': '0.636 (0.318)', 'ARI': '0.693 (0.373)', 'NMI': '0.805 (0.230)'}
+
+running kmeans_random_1 -------------------------
+kmeans_random_1: 
+{'CLUSTER_REAL_TIME': '0.089 (0.052)', 'CLUSTER_CPU_TIME': '0.089 (0.052)', 'ARI': '0.202 (0.039)', 'NMI': '0.470 (0.067)'}
+
+running kmeans_random_5 -------------------------
+kmeans_random_5: 
+{'CLUSTER_REAL_TIME': '0.390 (0.207)', 'CLUSTER_CPU_TIME': '0.390 (0.207)', 'ARI': '0.200 (0.055)', 'NMI': '0.463 (0.073)'}
+
+running kmeans_random_10 -------------------------
+kmeans_random_10: 
+{'CLUSTER_REAL_TIME': '0.800 (0.399)', 'CLUSTER_CPU_TIME': '0.800 (0.399)', 'ARI': '0.215 (0.047)', 'NMI': '0.491 (0.063)'}
