@@ -152,7 +152,13 @@ if [ ! -f $athena_lc ] || [ ! -f $athena_out ];then
     ./run_athena.sh interleaved_link_reads.sorted.fastq metaspades_out/contigs.fasta athena_out $threads > logs/athena.log 2>&1 &
 fi
 
-
+source $CONDA_PREFIX/bin/activate pangaea
+if [ $CONDA_DEFAULT_ENV == "pangaea" ];then
+    echo "`date "+%Y-%m-%d %H:%M:%S"` pangaea activated"
+else
+    echo "`date "+%Y-%m-%d %H:%M:%S"` pangaea not activated"
+    exit
+fi
 python ../../pangaea.py -i interleaved_link_reads.sorted.fastq  -md vae -tnf_k 4 -c 15 -lt 10,30 -st 1,2,3 -o pangaea_out &
 
 wait
