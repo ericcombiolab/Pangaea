@@ -9,7 +9,12 @@ BINDIR=$(dirname "$0")
 
 set -e
 
-cat $assembly_dir/*.spades/contigs.fasta $cluster_dir/contigs.megahit.fa $local_assembly > $assembly_dir/contigs.low_abd.binning.local.fa
+
+if [ $low_assembler == "spades" ];then
+    cat $assembly_dir/*.spades/contigs.fasta $cluster_dir/contigs.megahit.fa $local_assembly > $assembly_dir/contigs.low_abd.binning.local.fa
+else 
+    cat $assembly_dir/*.megahit/final.contigs.fa $cluster_dir/contigs.megahit.fa $local_assembly > $assembly_dir/contigs.low_abd.binning.local.fa
+fi
 $BINDIR/parse_header $assembly_dir/contigs.low_abd.binning.local.fa contig_ > $assembly_dir/contigs.low_abd.binning.local.renamed.fa
 mv $assembly_dir/contigs.low_abd.binning.local.renamed.fa $assembly_dir/contigs.low_abd.binning.local.fa
 

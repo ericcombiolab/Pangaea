@@ -138,10 +138,10 @@ def final_assemble(args, cluster_path, assembly_path, script_path):
     logging.info("reassemble low-abundance contigs")
     executor = ThreadPoolExecutor(max_workers=5)
     for cf in cutoff:
-        executor.submit(run_cmd, [low_assembly, assembly_path, args.spades, str(cf), str(threads)])
+        executor.submit(run_cmd, [low_assembly, assembly_path, args.spades, str(cf), str(threads), args.low_assembler])
     executor.shutdown()
     logging.info("merge args.spades/(seed) contigs with local assemblies")
-    run_cmd([merge_asm, cluster_path, assembly_path, args.local_assembly, args.athena, args.spades, snakemake])
+    run_cmd([merge_asm, cluster_path, assembly_path, args.local_assembly, args.athena, args.spades, args.low_assembler, snakemake])
     # new a file show finished
     with open(os.path.join(cluster_path, "assembly_finished"), "w") as f:
         f.write("finished")
