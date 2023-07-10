@@ -378,7 +378,11 @@ int main(int argc, char* argv[])
                             }
                             results.clear();
                         }
-                        results.emplace_back(thread_pool.enqueue(countKmer, mlen, reads_seq, last_barcode, kmer, vector_size, bin_size, &kmer2frequency));
+                        if (kmer == 15) {
+                            results.emplace_back(thread_pool.enqueue(countKmer, mlen, reads_seq, last_barcode, kmer, vector_size, bin_size, &kmer2frequency));
+                        } else if (kmer == 4) {
+                            results.emplace_back(thread_pool.enqueue(countTnf, mlen, reads_seq, last_barcode, kmer, kmer2frequency));
+                        }
                         last_barcode = std::move(p1.second);
                         reads_seq.clear();
                     }
@@ -392,7 +396,11 @@ int main(int argc, char* argv[])
                 break;
             }
         }
-        results.emplace_back(thread_pool.enqueue(countKmer, mlen, reads_seq, last_barcode, kmer, vector_size, bin_size, &kmer2frequency));
+        if (kmer == 15) {
+            results.emplace_back(thread_pool.enqueue(countKmer, mlen, reads_seq, last_barcode, kmer, vector_size, bin_size, &kmer2frequency));
+        } else if (kmer == 4) {
+            results.emplace_back(thread_pool.enqueue(countTnf, mlen, reads_seq, last_barcode, kmer, kmer2frequency));
+        }
         reads1f.close();
         reads2f.close();
     }
