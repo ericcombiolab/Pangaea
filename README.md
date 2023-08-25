@@ -1,5 +1,5 @@
 # Pangaea
-Pangaea is a linked-read assembler for linked-reads with high barcode specificity, using the variational autoencoder to bin linked-reads and multi-thresholding reassembly to assemble linked-reads.
+Pangaea is designed to assemble short-reads with high specificity physical (linked-reads) or virtual barcodes (long-reads+short-reads). It includes (1) short-reads binning using variational autoencoder (2)multi-thresholding reassembly and (3) ensemble assembly.
 
 ## Installation
 ```
@@ -117,7 +117,7 @@ optional arguments:
                         assembly)
 ```
 
-## Example of running Pangaea on linked reads
+## Example of running Pangaea on short-reads with physical barcodes (linked reads)
 Under folder ```example/pangaea_out```, pangaea was run with
 ```
 conda activate pangaea
@@ -125,12 +125,12 @@ cd example
 nohup python ../pangaea.py -1 reads1.fq.gz -2 reads2.fq.gz -sp contigs.fa -lc flye-input-contigs.fa -at athena.asm.fa -c 5 -o pangaea > pangaea.log 2>&1 &
 ```
 
-## Example of running Pangaea on hybrid reads (short pairend reads and longreads)
+## Example of running Pangaea on short-reads with virtual barcodes  (long-reads and short-reads)
 ```
 cd example/hybrid
 ./hybrid_wrapper.sh atcc_longreads_small.fastq.gz atcc_short_R1.fastq.gz atcc_short_R2.fastq.gz 60 operams > logs/log 2>&1
 ```
-###  Optional: Substituted the metaSPAdes in step 1 and Athena in step 2 with the corresponding hybrid assemblies (contigs generated from hybridSPAdes or OPERA-MS)
+###  Optional: Substitute the metaSPAdes in step 1 and Athena in step 2 with the corresponding hybrid assemblers (such as hybridSPAdes or OPERA-MS)
 ```
 # type: operams, hybridspades
 ./final_merge.sh <type>
