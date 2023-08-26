@@ -2,6 +2,7 @@
 Pangaea is designed to assemble short-reads with high specificity physical (linked-reads) or virtual barcodes (long-reads+short-reads). It includes (1) short-reads binning using variational autoencoder (2)multi-thresholding reassembly and (3) ensemble assembly.
 
 ## Installation
+
 An all-in-one installation script. This may take about 20 minutes ~ 1 hours.
 ```
 git clone https://github.com/ericcombiolab/Pangaea.git
