@@ -67,8 +67,7 @@ def save_clustering_result(args, outdir, reads, clusters, barcodes, script_path)
 def cluster_barcode_reads(args, model_path, cluster_path, script_path):    
     num_classes = args.clusters
     extract_reads = os.path.join(script_path, "bin", "extract_reads")
-    if args.long_reads:
-        extract_reads = os.path.join(script_path, "bin", "extract_reads_long")
+    
     # output_npz = os.path.join(cluster_path, "clusters.npz")
     output_tsv = os.path.join(cluster_path, "clusters.tsv")
     embedding_path = os.path.join(model_path, "latent.npz")
@@ -102,8 +101,7 @@ def cluster_barcode_reads(args, model_path, cluster_path, script_path):
         run_cmd([extract_reads, "-1", args.reads1, "-2", args.reads2, "-c", output_tsv, "-o", os.path.join(cluster_path, "cluster")])
     elif args.interleaved_reads:
         run_cmd([extract_reads, "-i", args.interleaved_reads, "-c", output_tsv, "-o", os.path.join(cluster_path, "cluster")])
-    elif args.long_reads:
-        run_cmd([extract_reads, "-r", args.long_reads, "-c", output_tsv, "-o", os.path.join(cluster_path, "cluster")])
+    
     else:
         logging.error("no reads provided")
         raise FileNotFoundError("no reads provided")
@@ -144,22 +142,4 @@ def final_assemble(args, cluster_path, assembly_path, script_path):
     run_cmd([merge_asm, cluster_path, assembly_path, args.local_assembly, args.athena, args.spades, args.low_assembler, snakemake])
     # new a file show finished
     with open(os.path.join(assembly_path, "assembly_finished"), "w") as f:
-        f.write("finished")
-
-def final_assemble_long(args, cluster_path, assembly_path, script_path):
-    long_reads_asm = os.path.join(script_path, "bin", "long_reads_asm.sh")
-    threads = args.threads
-    if not os.path.isdir(assembly_path):
-        run_cmd(["mkdir", assembly_path])
-    
-    if threads >= 150:
-        threads = 150
-    logging.info("mapping reads to contigs")
-    if args.long_reads:
-        run_cmd_with_pipe([long_reads_asm, cluster_path, assembly_path, args.long_reads, args.long_reads_type, args.low_abd_cut], os.path.join(assembly_path, "long_reads_asm.log"))
-    else:
-        logging.error("no long reads provided")
-        raise FileNotFoundError("no long reads provided")
-    with open(os.path.join(cluster_path, "assembly_finished"), "w") as f:
-        # new a file show finished
         f.write("finished")

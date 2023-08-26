@@ -13,7 +13,7 @@ import logging
 from torch.utils.data import DataLoader
 import numpy as np
 
-from clustering import cluster_barcode_reads, final_assemble, final_assemble_long
+from clustering import cluster_barcode_reads, final_assemble
 from data import Data
 from feature import Feature
 from models.VAENET import VAENET
