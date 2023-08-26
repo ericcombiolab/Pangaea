@@ -133,6 +133,7 @@ conda activate pangaea
 cd example
 nohup python ../pangaea.py -1 reads1.fq.gz -2 reads2.fq.gz -sp contigs.fa -lc flye-input-contigs.fa -at athena.asm.fa -c 5 -o pangaea > pangaea.log 2>&1 &
 ```
+The generated final assembly will be at ```pangaea/final.asm.fa```
 This may take about 1~2 hours. 
 
 ## Example of running Pangaea on short-reads with virtual barcodes  (long-reads and short-reads)
@@ -140,6 +141,7 @@ This may take about 1~2 hours.
 cd example/hybrid
 nohup ./hybrid_wrapper.sh atcc_longreads_small.fastq.gz atcc_short_R1.fastq.gz atcc_short_R2.fastq.gz 60 operams > hybrid.log 2>&1 &
 ```
+The generated final assembly will be at ```pangaea_out/final.asm.fa```
 This may take about 1~2 hours. 
 
 
