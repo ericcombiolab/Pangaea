@@ -143,7 +143,7 @@ def final_assemble(args, cluster_path, assembly_path, script_path):
     logging.info("merge args.spades/(seed) contigs with local assemblies")
     run_cmd([merge_asm, cluster_path, assembly_path, args.local_assembly, args.athena, args.spades, args.low_assembler, snakemake])
     # new a file show finished
-    with open(os.path.join(cluster_path, "assembly_finished"), "w") as f:
+    with open(os.path.join(assembly_path, "assembly_finished"), "w") as f:
         f.write("finished")
 
 def final_assemble_long(args, cluster_path, assembly_path, script_path):

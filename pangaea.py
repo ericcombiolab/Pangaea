@@ -66,7 +66,7 @@ def run(args, script_path):
         logging.info("step 1: feature extraction finished")
     else:
         # extract features
-        if (args.reads1 and args.reads2) or args.interleaved_reads or args.long_reads:
+        if (args.reads1 and args.reads2) or args.interleaved_reads:
             read_specify, abundance, tnf = Feature( args, script_path).extract_features()
         else:
             print("Please provide one or two input file(s):-1 and -2 for pair-end linked reads; -lr as long reads; -i for interleaved linked reads.")
@@ -107,7 +107,7 @@ def run(args, script_path):
         logging.info("start clustering")
         if not os.path.exists(cluster_path):
             run_cmd(["mkdir", cluster_path])
-        if (args.reads1 and args.reads2) or args.long_reads or args.interleaved_reads:
+        if (args.reads1 and args.reads2) or args.interleaved_reads:
             cluster_barcode_reads(args, model_path, cluster_path, script_path)
         else:
             logging.info("Please provide one or two input file(s):-1 and -2 for pair-end linked reads; -lr as long reads; -i for interleaved linked reads.")
@@ -122,8 +122,6 @@ def run(args, script_path):
         logging.info("start assembly")
         if (args.reads1 and args.reads2) or args.interleaved_reads:
             final_assemble(args, cluster_path, assembly_path, script_path )
-        elif args.long_reads:
-            final_assemble_long(args, cluster_path, assembly_path, script_path )
     logging.info("program finished successfully")
 
 
@@ -133,9 +131,6 @@ def main():
     # IO
     parser.add_argument("-1", "--reads1", default="", help="path to reads1 file (linked-reads)")
     parser.add_argument("-2", "--reads2", default="", help="path to reads2 file (linked-reads)")
-    parser.add_argument("-lreads", "--long_reads", default="", help="path to reads file (long-reads)")
-    #long reads type (pacbio_raw or nanopore_raw or pacbio_corrected or nanopore_corrected)
-    parser.add_argument("-lrtype", "--long_reads_type", default="pacbio_raw", choices=["pacbio_raw", "nanopore_raw", "pacbio_corrected", "nanopore_corrected"], help="long reads type (default pacbio_raw)")
     parser.add_argument("-i", "--interleaved_reads", default="", help="path to reads file (long-reads)")
 
     parser.add_argument("-o", "--output", required=True, help="output directory")
@@ -167,9 +162,8 @@ def main():
     parser.add_argument("-la", "--low_assembler", type=str, default="spades", help="local assembly method (spades or megahit)")
 
     parser.add_argument("-md", "--model", type=str, default="vae", help="model ( vae)")
-    parser.add_argument("-wx", "--weight_auxiliary", type=float, default=0.1, help="training weight for auxiliary (default 0.1)")
     parser.add_argument("-ls", "--loss_type", type=str, default="ce", help="reconstruction loss type (default ce)")
-    parser.add_argument("-cf", "--confidence", type=float, default=0.85, help="clustering confidence")
+
 
     #step control
     parser.add_argument("-st", "--steps", type=str, default="1,2,3,4", help="steps to run (default 1:feature extraction, 2:vae trainning, 3:clutsering, 4:sub-assembly and final assembly)")

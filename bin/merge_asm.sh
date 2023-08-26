@@ -4,7 +4,8 @@ assembly_dir=$2
 local_assembly=$3
 athena=$4
 contigs=$5
-snakefile=$6
+low_assembler=$6
+snakefile=$7
 BINDIR=$(dirname "$0")
 
 set -e

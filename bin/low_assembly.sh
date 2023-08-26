@@ -3,6 +3,7 @@ assembly_dir=$1
 contigs=$2
 covcut=$3
 thread=$4
+assembler=$5
 BINDIR=$(dirname "$0")
 
 set -e

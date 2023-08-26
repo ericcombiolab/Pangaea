@@ -2,10 +2,41 @@
 #include <string>
 #include <fstream>
 #include <unordered_map>
-#include <vector>
 #include "cmdline.h"
 #include "gzstream.h"
-#include "util.h"
+#include <vector>
+
+// stLFR or 10x (TELLSEQ)
+std::string read_type = "";
+std::pair<std::string, std::string> getBarcode(std::string& line)
+{
+    // infer reads type
+    if (!read_type.compare("")){
+        if (line.find("BX:Z") != std::string::npos)
+            read_type = "10x";
+        else if (line.find_first_of('#') != std::string::npos)
+            read_type = "stLFR";
+    }
+    // extract barcode
+    std::string read_name, barcode;
+    if (!read_type.compare("stLFR")){
+        std::size_t pos1 = line.find_first_of('#');
+        std::size_t pos2 = line.find_first_of('/', pos1 + 1);
+        read_name = line.substr(0, pos1);
+        barcode = line.substr(pos1 + 1, pos2 - pos1 - 1);
+        if (!barcode.compare("0_0_0"))
+            barcode.clear();
+    }
+    else{
+        read_name = line.substr(0, line.find_first_of(" \r\t\n"));
+        std::size_t pos1 = line.find("BX:Z");
+        if (pos1 != std::string::npos){
+            std::size_t pos2 = line.find_first_of('-', pos1 + 5);
+            barcode = line.substr(pos1 + 5, pos2 - pos1 - 5);
+        }
+    }
+    return std::make_pair(read_name, barcode);
+}
 
 int main(int argc, char* argv[])
 {
@@ -13,8 +44,6 @@ int main(int argc, char* argv[])
     argParser.add<std::string>("reads1", '1', "Path to reads1 (gzipped and barcode sorted).", false);
     argParser.add<std::string>("reads2", '2', "Path to reads2 (gzipped and barcode sorted).", false);
     argParser.add<std::string>("interleaved", 'i', "Path to interleaved reads (gzipped and barcode sorted).", false);
-    argParser.add<std::string>("long_reads", 'r', "Path to longreads (gzipped).", false);
-
     argParser.add<std::string>("clusters", 'c', "Path to clusters tsv.", true, "");
     argParser.add<std::string>("output", 'o', "Prefix to output.", true, "");
     argParser.parse_check(argc, argv);
@@ -22,7 +51,6 @@ int main(int argc, char* argv[])
     std::string reads1 = argParser.get<std::string>("reads1");
     std::string reads2 = argParser.get<std::string>("reads2");
     std::string interleaved = argParser.get<std::string>("interleaved");
-    std::string long_reads = argParser.get<std::string>("long_reads");
     std::string clusters = argParser.get<std::string>("clusters");
     std::string output = argParser.get<std::string>("output");
 
@@ -99,46 +127,7 @@ int main(int argc, char* argv[])
             }
         }
     }
-    else if (!long_reads.empty()) {
-        igzstream readsf(long_reads.c_str());
-        unsigned long long cnt_line = 0;
-        bool isSatisfied = false;
-        std::string read_line, reads_seq;
-        std::pair<std::string, std::string> p;
-
-        while (getline(readsf, read_line))
-        {
-            switch (++cnt_line % 4)
-            {
-            case 1:
-                p = std::move(getBarcode(read_line));
-                if (barcode2cluster.find(p.second) != barcode2cluster.end()) {
-                    isSatisfied = true;
-                    reads_seq += (p.first + "\tBX:Z:" + p.second + "\n");
-                } 
-                else
-                    isSatisfied = false;
-                break;
-            case 0:
-                if (cnt_line % 4000000 == 0)
-                    std::cout << "\rProcessed " << cnt_line / 4 << " read pairs. " << std::flush;
-                if (isSatisfied)
-                {
-                    reads_seq += (read_line + '\n');
-                    output_barcode.at(barcode2cluster.at(p.second)) << p.second << '\n';
-                    output_fq.at(barcode2cluster.at(p.second)) << reads_seq;
-                    reads_seq.clear();
-                }
-                break;
-            default:
-                if (isSatisfied)
-                {
-                    reads_seq += (read_line + '\n');
-                    break;
-                }
-            }
-        }
-    }
+    
     else if (!reads1.empty() && !reads2.empty()) {
         igzstream reads1f(reads1.c_str()), reads2f(reads2.c_str());
         unsigned long long cnt_line = 0;

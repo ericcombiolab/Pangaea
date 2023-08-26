@@ -28,10 +28,10 @@ def get_fasta_sizes(fa_path):
         ctg_size_map[ctg] = size
     return ctg_size_map
 
-#
-def filter_inputs(mergedbam, local, filtfa):
-    ctg_size_map = get_fasta_sizes(local)
-    fhandle = pysam.Samfile(mergedbam)
+
+def filter_inputs(mergedbam_path, mergedfa_path, mergedfiltfa_path):
+    ctg_size_map = get_fasta_sizes(mergedfa_path)
+    fhandle = pysam.Samfile(mergedbam_path)
     full_ctgs = set()
     for read in fhandle:
         if read.is_unmapped:
@@ -41,8 +41,8 @@ def filter_inputs(mergedbam, local, filtfa):
     fhandle.close()
 
     new_ctgs = set(ctg_size_map.keys()) - full_ctgs
-    fasta = pysam.FastaFile(local)
-    with open(filtfa, "w") as fout:
+    fasta = pysam.FastaFile(mergedfa_path)
+    with open(mergedfiltfa_path, "w") as fout:
         for ctg in new_ctgs:
             seq = str(fasta.fetch(ctg).upper())
             fout.write(">{}\n".format(ctg))
@@ -53,42 +53,39 @@ def filter_inputs(mergedbam, local, filtfa):
 
 
 def run(seeds, local, outdir):
+    premergedfa_path = local
     if not os.path.isdir(outdir):
         os.system("mkdir " + out)
-    filtfa = os.path.join(outdir, "pre-flye-input-contigs.filt.fa")
-    dup_5_seedsfa = os.path.join(outdir, "seed-contigs.fa")
-    mergedfa = os.path.join(outdir, "flye-input-contigs.fa")
+    premergedfiltfa_path = os.path.join(outdir, "pre-flye-input-contigs.filt.fa")
+    seedsfa_path = os.path.join(outdir, "seed-contigs.fa")
+    mergedfiltfa_path = os.path.join(outdir, "flye-input-contigs.fa")
 
-    # align local(athena_local+lowabd+binning) to templates(spades(aka:seeds_ctgs))
-    aling_bam = os.path.join(outdir, "align-inputs.bam")
-    if not os.path.isfile(aling_bam):
+    mergedbam_path = os.path.join(outdir, "align-inputs.bam")
+    if not os.path.isfile(mergedbam_path):
         with open(os.devnull, "w") as devnull:
             if not os.path.isfile(seeds + ".amb"):
                 os.system("bwa index " + seeds)
-            cmd = "bwa mem -t {} {} {} | samtools view -bS - | samtools sort -o {} - ".format(100, seeds, local, aling_bam)
+            cmd = "bwa mem -t {} {} {} | samtools view -bS - | samtools sort -o {} - ".format(100, seeds, premergedfa_path, mergedbam_path)
             pp = subprocess.Popen(cmd, shell=True, stdout=devnull, stderr=devnull)
             retcode = pp.wait()
-            assert (retcode == 0), "bwa alignment of unfiltered subassembly contigs {} to {} failed".format(local, seeds)
-            cmd = "samtools index {}".format(aling_bam)
+            assert (retcode == 0), "bwa alignment of unfiltered subassembly contigs {} to {} failed".format(premergedfa_path, seeds)
+            cmd = "samtools index {}".format(mergedbam_path)
             pp = subprocess.Popen(cmd, shell=True, stdout=devnull, stderr=devnull)
             retcode = pp.wait()
-            assert retcode == 0, "indexing of {} failed".format(aling_bam)
+            assert retcode == 0, "indexing of {} failed".format(mergedbam_path)
 
-    
-    if not os.path.isfile(mergedfa):
-        # filter out contigs that are fully covered by the templates
-        filter_inputs(aling_bam, local, filtfa)
-        os.system("seqtk seq -L 1000 {} > {}".format(seeds, dup_5_seedsfa))
+    if not os.path.isfile(mergedfiltfa_path):
+        filter_inputs(mergedbam_path, premergedfa_path, premergedfiltfa_path)
+        os.system("seqtk seq -L 1000 {} > {}".format(seeds, seedsfa_path))
         for _ in range(5):
-            os.system("seqtk seq -L 1000 {} >> {}".format(seeds, dup_5_seedsfa))
-        # merge the filtered contigs with the templates*5
-        concat_files([filtfa, dup_5_seedsfa], mergedfa)
-        os.system("{} {} contig_ > {}".format(os.path.join(script_path, "parse_header"), mergedfa, mergedfa+'.tmp'))
-        os.system("mv {} {}".format(mergedfa+'.tmp', mergedfa))
+            os.system("seqtk seq -L 1000 {} >> {}".format(seeds, seedsfa_path))
+        concat_files([premergedfiltfa_path, seedsfa_path], mergedfiltfa_path)
+        os.system("{} {} contig_ > {}".format(os.path.join(script_path, "parse_header"), mergedfiltfa_path, mergedfiltfa_path+'.tmp'))
+        os.system("mv {} {}".format(mergedfiltfa_path+'.tmp', mergedfiltfa_path))
 
     flye0_path = os.path.join(outdir, "flye-asm-1")
     flye_contigs_path = os.path.join(flye0_path, "assembly.fasta")
-    cmd = "flye --meta --subassemblies {} --out-dir {} --threads {} --min-overlap 1000".format(mergedfa, flye0_path, 128)
+    cmd = "flye --meta --subassemblies {} --out-dir {} --threads {} --min-overlap 1000".format(mergedfiltfa_path, flye0_path, 128)
     if not os.path.isfile(flye_contigs_path):
         subprocess.check_call(cmd, shell=True)
 
@@ -99,6 +96,4 @@ def run(seeds, local, outdir):
 templates = sys.argv[1]
 local = sys.argv[2]
 out = sys.argv[3]
-# templates: spades(aka:seeds_ctgs)
-# local: athena_local+lowabd+binning
 run(templates, local, out)
