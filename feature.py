@@ -72,25 +72,13 @@ class Feature:
         if not os.path.isfile(out_count):
             logging.info("caculate abundance : "+out_count )
             if self.args.reads1 and self.args.reads2:
-                command = [self.jellyfish, "count","<(pigz -dc "+self.args.reads1+ self.args.reads2+") -t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count]
+                command = ["pigz", "-dc", self.r1, self.r2, "|", "jellyfish", "count", "-t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count, "--min-qual-char=?", "/dev/fd/0"]
                 logging.info("command started: " + " ".join(command))
-                pipe = subprocess.Popen(["pigz", "-dc", self.args.reads1, self.args.reads2], stdout=subprocess.PIPE)
-                subprocess.check_output([self.jellyfish, "count", "-t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count, "--min-qual-char=?", "/dev/fd/0", ], stdin=pipe.stdout)
+                pipe = subprocess.Popen(["pigz", "-dc", self.r1, self.r2], stdout=subprocess.PIPE)
+                subprocess.check_output(["jellyfish", "count", "-t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count, "--min-qual-char=?", "/dev/fd/0", ], stdin=pipe.stdout)
                 pipe.communicate()
                 logging.info("command completed: " + " ".join(command))
-
-            elif self.args.long_reads:
-                # if reads are gziped file, use pigz to decompress and save to a fq file
-                if self.args.long_reads.endswith(".gz"):
-                    out_fq = os.path.join(self.feature_dir, "long_reads.fq")
-                    run_cmd_with_pipe(["pigz", "-dc", self.args.long_reads], out_fq)
-                    run_cmd([self.jellyfish, "count", out_fq, "-t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count])
-                    # self.args.long_reads = out_fq
-
-                # remove the fq file
-                run_cmd(["rm", out_fq])
-                # then use jellyfish to count kmer
-
+                run_cmd(["jellyfish", "dump", "-c", "-t", out_count, "-o", out_dump])
             elif self.args.interleaved_reads:
                 if self.args.interleaved_reads.endswith(".gz"):
                     out_fq = os.path.join(self.feature_dir, "interleaved_reads.fq")
@@ -100,7 +88,6 @@ class Feature:
                 run_cmd([self.jellyfish, "count", out_fq, "-t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count])
                 if self.args.interleaved_reads.endswith(".gz"):
                     run_cmd(["rm", out_fq])
-                # logging.info("command completed: " + " ".join(command))
                 
             else:
                 raise ValueError("reads must be specified")
@@ -112,8 +99,6 @@ class Feature:
             logging.info("caculate frequency : "+out_freq )
             if self.args.reads1 and self.args.reads2:
                 run_cmd([self.count_kmer, "-1", self.args.reads1,"-2", self.args.reads2, "-t", str(self.threads), "-g", out_dump, "-k", str(self.kmer), "-l", str(self.minl), "-w", str(self.ws), "-v", str(self.vs), "-o", out_freq])
-            elif self.args.long_reads:
-                run_cmd([self.count_kmer, "-r", str(self.args.long_reads), "-t", str(self.threads), "-g", out_dump, "-k", str(self.kmer), "-l", str(self.minl), "-w", str(self.ws), "-v", str(self.vs), "-o", out_freq])
             elif self.args.interleaved_reads:
                 run_cmd([self.count_kmer, "-i", str(self.args.interleaved_reads), "-t", str(self.threads), "-g", out_dump, "-k", str(self.kmer), "-l", str(self.minl), "-w", str(self.ws), "-v", str(self.vs), "-o", out_freq])
             else:
@@ -137,11 +122,9 @@ class Feature:
         
         if not os.path.isfile(out_freq):
             if self.args.reads1 and self.args.reads2:
-                run_cmd([self.count_kmer, "-1", self.args.reads1,  "-2", self.args.reads2,  "-k", self.tnf_k, "-t", str(self.threads), "-l", str(self.minl), "-o", out_freq])
-            elif self.args.long_reads:
-                run_cmd([self.count_kmer, "-r", self.args.long_reads, "-k", self.tnf_k, "-t", str(self.threads), "-l", str(self.minl), "-o", out_freq])
+                run_cmd([self.count_tnf, "-1", self.args.reads1, "-2", self.args.reads2, "-k", self.tnf_k, "-t", str(self.threads), "-l", str(self.minl), "-o", out_freq])
             elif self.args.interleaved_reads:
-                run_cmd([self.count_kmer, "-i", self.args.interleaved_reads, "-k", self.tnf_k, "-t", str(self.threads), "-l", str(self.minl), "-o", out_freq])
+                run_cmd([self.count_tnf, "-i", self.args.interleaved_reads, "-k", self.tnf_k, "-t", str(self.threads), "-l", str(self.minl), "-o", out_freq])
             else:
                 raise ValueError("reads must be specified")
             

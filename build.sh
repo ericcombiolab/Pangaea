@@ -7,6 +7,14 @@ make -j 4
 make install
 cd -
 
+# install rph_kmeans
+cd third_parties/rph_kmeans
+python3 setup.py install
+cd -
+
+# build cpp bins
+cd cpptools && make && cd -
+
 # install conda env pangaea
 conda env create -f environment.yaml
 source $CONDA_PREFIX/bin/activate pangaea
@@ -16,10 +24,3 @@ else
     echo "`date "+%Y-%m-%d %H:%M:%S"` pangaea not activated"
     exit
 fi
-# install rph_kmeans
-cd third_parties/rph_kmeans
-python3 setup.py install
-cd -
-
-# build util binaries
-cd cpptools && make && cd -
