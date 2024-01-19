@@ -65,6 +65,7 @@ std::pair<std::string, std::vector<double>> countKmer(
     unsigned long total = 0;
     std::size_t len = 0;
     u_int64_t val = 0;
+    // all possible kmer number for kmer = 15, which is (2^30 - 1)=1073741823
     unsigned long bases = (unsigned long)std::pow(2, k * 2) - 1;
 
     for (std::size_t i = 0; i < reads_seq.length(); ++i)
@@ -169,8 +170,14 @@ int main(int argc, char* argv[])
     globalf.close();
 
     ogzstream outputf(output.c_str());
+    std::cout<<interleaved<<std::endl;
     if (interleaved.empty())
     {
+        if (reads1.empty() || reads2.empty())
+        {
+            std::cerr << "Error: --reads1 and --reads2 are needed." << std::endl;
+            return 1;
+        }            
         igzstream reads1f(reads1.c_str()), reads2f(reads2.c_str());
         unsigned long long cnt_line = 0, cnt_unpaired = 0;
         std::string line1, line2, last_barcode, reads_seq;
@@ -226,29 +233,21 @@ int main(int argc, char* argv[])
     }
     else
     {
-        std::fstream readsf(interleaved.c_str());
+        igzstream readsf(interleaved.c_str());
         unsigned long long cnt_line = 0, cnt_unpaired = 0;
-        std::string line1, line2, last_barcode, barcode, reads_seq;
-        std::size_t pos1, pos2;
-
+        std::string line, last_barcode, barcode, reads_seq;
         while (getline(readsf, line))
         {
             switch (++cnt_line % 8)
             {
             case 1:
-                pos1 = line.find_first_of('\t');
-                barcode.clear();
-                if (pos1 != std::string::npos)
-                {
-                    pos2 = line.find_first_of('-', pos1 + 6);
-                    barcode = line.substr(pos1 + 6, pos2 - pos1 - 6);
-                }
+                barcode = getBarcode(line).second;
                 break;
             case 2:
-                reads_seq += (line + "N\n");
+                reads_seq += (line + "N");
                 break;
             case 6:
-                reads_seq += (line + "N\n");
+                reads_seq += (line + "N");
                 if (barcode.compare(last_barcode))
                 {
                     if (results.size() >= 10000)

@@ -2,18 +2,21 @@ import logging
 import os
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
+from sklearn.metrics import silhouette_score
 
 import numpy as np
 from rph_kmeans import RPHKMeans
 from sklearn.cluster import KMeans
 
 from utils import run_cmd, run_cmd_with_pipe
-
+import warnings 
 
 def clustering_rph_kmeans(embedding, k):
-    clt = RPHKMeans(n_init=20, n_clusters=k, verbose=0)
-    clusters = clt.fit_predict(embedding)
-    return clusters
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        clt = RPHKMeans(n_init=20, n_clusters=k, verbose=0)
+        clusters = clt.fit_predict(embedding)
+        return clusters
 
 
 def save_clustering_result(args, outdir, reads, clusters, barcodes, script_path):
@@ -64,11 +67,10 @@ def save_clustering_result(args, outdir, reads, clusters, barcodes, script_path)
     logging.info("merge contigs with local assemblies")
     run_cmd([merge_asm, cluster_dir, assembly_dir, args.local_assembly, args.athena, args.spades, snakemake])
 
-def cluster_barcode_reads(args, model_path, cluster_path, script_path):    
-    num_classes = args.clusters
+def cluster_barcode_reads(args, model_path, cluster_path, script_path, range_step=(4, 100, 3), patience=7, delta=0.0001):    
     extract_reads = os.path.join(script_path, "bin", "extract_reads")
-    
-    # output_npz = os.path.join(cluster_path, "clusters.npz")
+    calculate_diversity = os.path.join(script_path, "bin", "calculate_diversity.sh")
+    output_npz = os.path.join(cluster_path, "clusters.npz")
     output_tsv = os.path.join(cluster_path, "clusters.tsv")
     embedding_path = os.path.join(model_path, "latent.npz")
     barcodes_path = os.path.join(model_path, "barcodes.npz")
@@ -82,12 +84,58 @@ def cluster_barcode_reads(args, model_path, cluster_path, script_path):
             # load barcodes
             barcodes = np.load(barcodes_path)['arr_0']
             # clustering
-            clusters = clustering_rph_kmeans(embedding, num_classes)
-            # np.savez(output_npz, clusters)
-            logging.info("saving clustering tsv") 
+            best_score = -1
             cluster2barcodes = defaultdict(list)
+
+            if args.clusters:
+                num_classes = args.clusters
+            else:
+                if args.reads1 and args.reads2:
+                    run_cmd([calculate_diversity, args.reads1])
+                elif args.interleaved_reads:
+                    run_cmd([calculate_diversity, args.interleaved_reads])
+                else:
+                    logging.error("no reads provided")
+                    raise FileNotFoundError("no reads provided")
+                shannon_diversity = np.loadtxt("metaphlan_tmp/diversity_analysis/profiles_table_shannon.txt")
+                num_classes = int(8 * shannon_diversity)
+                logging.info(f"estimated num_classes: {num_classes}")
+                run_cmd(["rm", "-rf", "metaphlan_tmp"])
+            clusters = clustering_rph_kmeans(embedding, num_classes)
+            np.savez(output_npz, clusters)
             for i in range(len(barcodes)):
                 cluster2barcodes[clusters[i]].append(barcodes[i])
+            logging.info("saving clustering tsv")
+            '''            
+                for num_classes in range(range_step[0], range_step[1], range_step[2]):
+                    clusters = clustering_rph_kmeans(embedding, num_classes)
+                    # silhouette_score
+                    smpl_size = 200000
+                    if len(barcodes) <= smpl_size:
+                        score_euclidean = silhouette_score(embedding, clusters, metric='euclidean', sample_size=None)
+                        logging.info(f"using all barcodes {len(barcodes)} for silhouette_score")
+                    else:
+                        score_euclidean = silhouette_score(embedding, clusters, metric='euclidean', sample_size=smpl_size)
+                        logging.info(f"using {smpl_size} samples all {len(barcodes)} barcodes for silhouette_score")
+
+                    # score_cosine = silhouette_score(embedding, clusters, metric='cosine', sample_size=None)
+                    # if score not increasing in next patience times,then stop
+                    if score_euclidean + delta > best_score:
+                        best_score = score_euclidean
+                        best_num_classes = num_classes
+                        np.savez(output_npz, clusters)
+                        for i in range(len(barcodes)):
+                            cluster2barcodes[clusters[i]].append(barcodes[i])
+                        logging.info("saving clustering tsv")
+                        count = 0
+                    else:
+                        count += 1
+                    logging.info(f"score_euclidean: {score_euclidean}, best_score: {best_score}, num_classes: {num_classes}") 
+                    if count > patience:
+                        logging.info(f"clustering early stopped")
+                        break
+                logging.info(f"best_num_classes: {best_num_classes}, best_score: {best_score}")
+                '''
             with open(output_tsv, "w") as tsv:
                 for cluster_id in cluster2barcodes:
                     tsv.write("{}\t{}\n".format(cluster_id, ",".join(cluster2barcodes[cluster_id])))

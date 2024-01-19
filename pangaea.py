@@ -151,7 +151,7 @@ def main():
     parser.add_argument("-wk", "--weight_kl", type=float, default=0.015, help="training weight for KL (default 0.015)")
     parser.add_argument("-ld", "--latent_dim", type=int, default=32, help="latent dimension (default 32)")
     # others
-    parser.add_argument("-c", "--clusters", type=int, required=True, help="number of clusters")
+    parser.add_argument("-c", "--clusters", type=int, required=False, help="number of clusters")
     parser.add_argument("-t", "--threads", type=int, default=100, help="number of threads (default 100)")
     parser.add_argument("-g", "--use_cuda", type=bool, default=False, help="use cuda (default False)")
     parser.add_argument("-n", "--num_gpus", type=int, default=1, help="use gpu in parallel (if use cuda)")

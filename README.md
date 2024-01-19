@@ -3,7 +3,9 @@ Pangaea is designed to assemble short-reads with high specificity physical (link
 
 ## Installation
 
-An all-in-one installation script. This may take about 20 minutes ~ 1 hours.
+An all-in-one installation script. This may take about 20 minutes ~ 1 hours. 
+Note! This script will download MetaPhlan's latest database into this directory $PWD/metapglan4_DB, which requires about 20G storage and the process may take long. If you would like to specify a dedicated path for this, please run ```./build.sh -d [path]``` instead. 
+Suggestion: metaphlan is used for clustering number choosing, if you tend to specify cluster numbers by your own, you can just skip this installation step and run pangaea with -c [number] option. According to our experiments, we suggest use a number around 35 as the default c for complexed metagenomic data( in which their species number is above 200 and shannon diversity is around 3.5 ). For mock or simulation data, we suggest use a smaller or equal number to the sepecies number. 
 ```
 git clone https://github.com/ericcombiolab/Pangaea.git
 cd Pangaea
@@ -122,8 +124,7 @@ optional arguments:
   -ls LOSS_TYPE, --loss_type LOSS_TYPE
                         reconstruction loss type (default ce)
   -st STEPS, --steps STEPS
-                        steps to run (default 1:feature extraction, 2:vae
-                        training, 3:clutsering, 4:sub-assembly and final
+                        steps to run (default 1:feature extraction, 2:vae trainning, 3:clutsering, 4:sub-assembly and final
                         assembly)
 ```
 
