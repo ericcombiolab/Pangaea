@@ -1,13 +1,31 @@
 # Pangaea
 Pangaea is designed to assemble short-reads with high specificity physical (linked-reads) or virtual barcodes (long-reads+short-reads). It includes (1) short-reads binning using variational autoencoder (2)multi-thresholding reassembly and (3) ensemble assembly.
 
+## New: Pangaea Docker Image
+The easit way to run Pangaea!
+We have built a docker image for users to directly run Pangaea (without automaticly select cluster numbers).
+```
+docker pull jmelody/pangaea:std
+git clone https://github.com/ericcombiolab/Pangaea.git
+nohup docker run  -v $PWD/Pangaea/example/:/example -u $(id -u):$(id -g)  jmelody/pangaea:std /bin/bash /app/run_test.sh -1 /example/reads1.fq.gz -2 /example/reads2.fq.gz -sp /example/contigs.fa -lc /example/flye-input-contigs.fa -at /example/athena.asm.fa -o /example/pangaea -c 5 &
+```
+Please remember set ```-u $(id -u):$(id -g)``` to avoid using root user. Otherwise the Pangaea/example directory will also be root permission.
+
 ## Installation
 
-An all-in-one installation script. This may take about 20 minutes ~ 1 hours.
+An all-in-one installation script. This may take about 20 minutes ~ 1 hours. 
+
+Note! This script will download MetaPhlan4's latest database into this directory $PWD/metaplan4_DB, which requires about 20G storage and the process may take long. If you would like to specify a dedicated path for this, please run ```./build.sh -d [path]``` instead. 
+
+Suggestion: MetaPhlan4 is used for clustering number choosing, if you tend to specify a clustering number by your own, you can just skip this installation step and run pangaea with -c [number] option. According to our experiments, we suggest using a number around 35 as the default c for complexed metagenomic data( in which their species number is above 200 and shannon diversity is around 3.5 ). For mock or simulation data, we suggest using a smaller or equal number to the real species number if the species number is lower than 35. 
 ```
 git clone https://github.com/ericcombiolab/Pangaea.git
 cd Pangaea
 ./build.sh
+# set up metaphlan4
+./build_db.sh (this will download the database in current directory named ./metaphlan4_DB)
+# or 
+./build_db.sh -d [your prefered directory(please make sure the space is larger than 25G)]
 ```
 ### Dependencies
 Pangaea depends on [numpy >= 1.23.5](https://numpy.org/install/), [pandas >= 1.5.3](https://pandas.pydata.org/docs/getting_started/install.html), [sklearn >= 1.2.2](https://scikit-learn.org/stable/install.html), [snakemake](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html), [pysam >= 0.20.0](https://pysam.readthedocs.io/en/latest/installation.html), [torch 1.10.0](https://pytorch.org/get-started/locally/), [rph_kmeans](https://github.com/tinglabs/rph_kmeans), [pigz 2.4](https://zlib.net/pigz/), [bwa >= 0.7.17](https://github.com/lh3/bwa), [samtools 1.9](https://github.com/samtools/samtools), [seqtk](https://github.com/lh3/seqtk), [megahit v1.2.9](https://github.com/voutcn/megahit), [spades(>=v3.15.3)](https://github.com/ablab/spades), [flye 2.8-b1674](https://github.com/fenderglass/Flye), [quickmerge](https://github.com/mahulchak/quickmerge), [Jellyfish 2.3.0](https://github.com/gmarcais/Jellyfish)and [jgi_summarize_bam_contig_depths](https://bitbucket.org/berkeleylab/metabat/src/master/).
@@ -122,8 +140,7 @@ optional arguments:
   -ls LOSS_TYPE, --loss_type LOSS_TYPE
                         reconstruction loss type (default ce)
   -st STEPS, --steps STEPS
-                        steps to run (default 1:feature extraction, 2:vae
-                        training, 3:clutsering, 4:sub-assembly and final
+                        steps to run (default 1:feature extraction, 2:vae trainning, 3:clutsering, 4:sub-assembly and final
                         assembly)
 ```
 

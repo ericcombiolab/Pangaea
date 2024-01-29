@@ -15,5 +15,7 @@ if [ $assembler == "spades" ];then
         metaspades.py --continue -o $assembly_dir/contigs.megahit_cut$covcut.low_abd.spades > /dev/null
     fi
 else
-    megahit --12 $assembly_dir/contigs.megahit_cut$covcut.low_abd.fq -t $thread -o $assembly_dir/contigs.megahit_cut$covcut.low_abd.megahit > /dev/null 2>&1
+    if [ ! -f $assembly_dir/contigs.megahit_cut$covcut.low_abd.megahit/final.contigs.fa ]; then
+        megahit --12 $assembly_dir/contigs.megahit_cut$covcut.low_abd.fq -t $thread -o $assembly_dir/contigs.megahit_cut$covcut.low_abd.megahit > /dev/null 2>&1
+    fi
 fi

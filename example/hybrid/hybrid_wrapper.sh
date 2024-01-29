@@ -133,7 +133,7 @@ if [ -f interleaved_link_reads.sorted.fastq ];then
     echo "sort already done"
 else
     echo "sort linked reads by barcode"
-    awk '{                      
+    awk '{
         if (NR % 8 == 0) {
             printf("%s\n", $0);
         }else if(NR % 8==1) {

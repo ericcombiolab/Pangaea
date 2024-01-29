@@ -77,7 +77,7 @@ std::vector<std::string> generateAllKmers(int n)
 
 std::pair<std::string, std::vector<double>> countKmer(int mlen, std::string reads_seq, std::string barcode, int k, std::map<unsigned int, double> kmer2frequency)
 {
-    std::vector<double> ret_fq;
+     std::vector<double> ret_fq;
     if (barcode.empty() || reads_seq.size() <= mlen)
         return std::pair<std::string, std::vector<double>>("", ret_fq);
 
@@ -231,23 +231,16 @@ int main(int argc, char* argv[])
     }
     else
     {
-        std::ifstream readsf(interleaved.c_str());
+        igzstream readsf(interleaved.c_str());
         unsigned long long cnt_line = 0, cnt_unpaired = 0;
         std::string line, last_barcode, barcode, reads_seq;
-        std::size_t pos1, pos2;
 
         while (getline(readsf, line))
         {
             switch (++cnt_line % 8)
             {
             case 1:
-                pos1 = line.find_first_of('\t');
-                barcode.clear();
-                if (pos1 != std::string::npos)
-                {
-                    pos2 = line.find_first_of('-', pos1 + 6);
-                    barcode = line.substr(pos1 + 6, pos2 - pos1 - 6);
-                }
+                barcode = getBarcode(line).second;
                 break;
             case 2:
                 reads_seq += (line + "N");
@@ -279,6 +272,7 @@ int main(int argc, char* argv[])
                     last_barcode = std::move(barcode);
                     reads_seq.clear();
                 }
+                break;
             case 0:
                 if (cnt_line % 8000000 == 0)
                     std::cout << "tnf  Processed " << cnt_line / 8 << " read pairs." << std::endl;
