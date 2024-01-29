@@ -76,7 +76,7 @@ def cluster_barcode_reads(args, model_path, cluster_path, script_path, range_ste
     barcodes_path = os.path.join(model_path, "barcodes.npz")
     # check if latent.npz and barcodes.npz exists
     if not os.path.isfile(embedding_path) or not os.path.isfile(barcodes_path) or not os.path.isfile(extract_reads):
-        raise FileNotFoundError("latent.npz or barcodes.npz or bin/extract_reads_long not found")
+        raise FileNotFoundError(f"{embedding_path} or {barcodes_path} or {extract_reads} not found")
     if not os.path.isfile(output_tsv):
         try:
             # load embeding
