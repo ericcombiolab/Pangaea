@@ -106,36 +106,7 @@ def cluster_barcode_reads(args, model_path, cluster_path, script_path, range_ste
             for i in range(len(barcodes)):
                 cluster2barcodes[clusters[i]].append(barcodes[i])
             logging.info("saving clustering tsv")
-            '''            
-                for num_classes in range(range_step[0], range_step[1], range_step[2]):
-                    clusters = clustering_rph_kmeans(embedding, num_classes)
-                    # silhouette_score
-                    smpl_size = 200000
-                    if len(barcodes) <= smpl_size:
-                        score_euclidean = silhouette_score(embedding, clusters, metric='euclidean', sample_size=None)
-                        logging.info(f"using all barcodes {len(barcodes)} for silhouette_score")
-                    else:
-                        score_euclidean = silhouette_score(embedding, clusters, metric='euclidean', sample_size=smpl_size)
-                        logging.info(f"using {smpl_size} samples all {len(barcodes)} barcodes for silhouette_score")
-
-                    # score_cosine = silhouette_score(embedding, clusters, metric='cosine', sample_size=None)
-                    # if score not increasing in next patience times,then stop
-                    if score_euclidean + delta > best_score:
-                        best_score = score_euclidean
-                        best_num_classes = num_classes
-                        np.savez(output_npz, clusters)
-                        for i in range(len(barcodes)):
-                            cluster2barcodes[clusters[i]].append(barcodes[i])
-                        logging.info("saving clustering tsv")
-                        count = 0
-                    else:
-                        count += 1
-                    logging.info(f"score_euclidean: {score_euclidean}, best_score: {best_score}, num_classes: {num_classes}") 
-                    if count > patience:
-                        logging.info(f"clustering early stopped")
-                        break
-                logging.info(f"best_num_classes: {best_num_classes}, best_score: {best_score}")
-                '''
+            
             with open(output_tsv, "w") as tsv:
                 for cluster_id in cluster2barcodes:
                     tsv.write("{}\t{}\n".format(cluster_id, ",".join(cluster2barcodes[cluster_id])))

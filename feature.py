@@ -20,7 +20,7 @@ class Feature:
         self.threads = args.threads
         self.count_kmer = os.path.join(script_path, "bin", "count_kmer")
         self.count_tnf = os.path.join(script_path, "bin", "count_tnf")
-        self.jellyfish = os.path.join(script_path, "third_parties/jellyfish_pkg/bin", "jellyfish")
+        self.jellyfish = "jellyfish"
         self.feature_dir = os.path.join(args.output, "1.features")
         if not os.path.isdir(self.feature_dir):
             run_cmd(["mkdir", self.feature_dir])

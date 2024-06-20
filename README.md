@@ -1,8 +1,7 @@
 # Pangaea
 Pangaea is designed to assemble short-reads with high specificity physical (linked-reads) or virtual barcodes (long-reads+short-reads). It includes (1) short-reads binning using variational autoencoder (2)multi-thresholding reassembly and (3) ensemble assembly.
 
-## New: Pangaea Docker Image
-The easit way to run Pangaea!
+## Docker
 We have built a docker image for users to directly run Pangaea (without automaticly select cluster numbers).
 ```
 docker pull jmelody/pangaea:std
@@ -10,6 +9,8 @@ git clone https://github.com/ericcombiolab/Pangaea.git
 nohup docker run  -v $PWD/Pangaea/example/:/example -u $(id -u):$(id -g)  jmelody/pangaea:std /bin/bash /app/run_test.sh -1 /example/reads1.fq.gz -2 /example/reads2.fq.gz -sp /example/contigs.fa -lc /example/flye-input-contigs.fa -at /example/athena.asm.fa -o /example/pangaea -c 5 &
 ```
 Please remember set ```-u $(id -u):$(id -g)``` to avoid using root user. Otherwise the Pangaea/example directory will also be root permission.
+If you got error when running Docker. Please: 1. check the log file ```example/pangaea/log```. You can also open a issue and share the log file with us.  
+Or, 2. you can run/follow the script ```build.sh``` which will create a conda envrionment and build the necessary packages step by step. 
 
 ## Installation
 
