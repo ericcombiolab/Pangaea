@@ -13,7 +13,7 @@ extract_unmapped : extract_unmapped.cpp
 parse_header: parse_header.cpp
 	g++ -O3 -o ../bin/parse_header parse_header.cpp -I./include ${LDFLAGS}
 add_barcode : add_barcode.cpp
-	g++ -O3 -o ../bin/add_barcode add_barcode.cpp -I./include -lssl -lcrypto -lhts -fopenmp
+	g++ -O3 -o ../bin/add_barcode add_barcode.cpp -I./include -lhts -fopenmp
 assign_barcodes: assign_barcodes.cpp
 	g++ -O3 -o ../bin/assign_barcodes assign_barcodes.cpp -I./include -fopenmp ${LDFLAGS}
 

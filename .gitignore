@@ -6,6 +6,7 @@ pangaea/**
 example/hybrid/*out/*
 example/hybrid/intermediate_files/*
 example/hybrid/quast_results*
+example/pangaea/**
 .vscode/**
 .snakemake/**
 quast_results/**
@@ -22,3 +23,5 @@ bin/extract_unmapped
 bin/parse_header
 .nfs0000010a8913a85000065db8
 *log
+example
+third_parties
