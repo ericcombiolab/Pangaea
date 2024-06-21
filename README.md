@@ -4,7 +4,7 @@ Pangaea is designed to assemble short-reads with high specificity physical (link
 ## Docker
 We have built a docker image for users to directly run Pangaea (without automaticly select cluster numbers).
 ```
-docker pull jmelody/pangaea:std
+docker pull jmelody/pangaea:v1.0
 git clone https://github.com/ericcombiolab/Pangaea.git
 nohup docker run  -v $PWD/Pangaea/example/:/example -u $(id -u):$(id -g)  jmelody/pangaea:std /bin/bash /app/run_test.sh -1 /example/reads1.fq.gz -2 /example/reads2.fq.gz -sp /example/contigs.fa -lc /example/flye-input-contigs.fa -at /example/athena.asm.fa -o /example/pangaea -c 5 &
 ```
