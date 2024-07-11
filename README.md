@@ -1,6 +1,10 @@
 # Pangaea
 Pangaea is designed to assemble short-reads with high specificity physical (linked-reads) or virtual barcodes (long-reads+short-reads). It includes (1) short-reads binning using variational autoencoder (2)multi-thresholding reassembly and (3) ensemble assembly.
 
+## TODO
+- [ ] Add more examples and wiki.
+- [ ] Conda package through Bioconda channel.
+
 ## Docker
 We have built a docker image for users to directly run Pangaea (without automaticly select cluster numbers).
 ```

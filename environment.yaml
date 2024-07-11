@@ -192,3 +192,6 @@ dependencies:
   - scikit-learn
   - samtools
   - seqtk
+  - pip:
+    - metaphlan
+    - snakemake
