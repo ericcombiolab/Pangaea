@@ -5,7 +5,7 @@ set -e
 conda env create -f environment.yaml
 
 # install spades(metaspades)
-mamba install spades metaphlan
+conda install spades metaphlan
 
 # install rph_kmeans
 cd third_parties/rph_kmeans
