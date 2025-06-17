@@ -1,0 +1,38 @@
+Command line: /home/comp/zmzhang/software/SPAdes-3.15.3-Linux/bin/metaspades.py	--12	/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.fq	--only-assembler	-m	5000	-t	100	--untrusted-contigs	/home/comp/zmzhang/stlfr/hlj/example/contigs.fa	-o	/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades	
+
+System information:
+  SPAdes version: 3.15.3
+  Python version: 3.7.8
+  OS: Linux-5.4.17-2136.310.7.1.el8uek.x86_64-x86_64-with-redhat-8.6-Ootpa
+
+Output dir: /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades
+Mode: ONLY assembling (without read error correction)
+Debug mode is turned OFF
+
+Dataset parameters:
+  Metagenomic mode
+  Reads:
+    Library number: 1, library type: paired-end
+      orientation: fr
+      left reads: not specified
+      right reads: not specified
+      interlaced reads: ['/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.fq']
+      single reads: not specified
+      merged reads: not specified
+    Library number: 2, library type: untrusted-contigs
+      left reads: not specified
+      right reads: not specified
+      interlaced reads: not specified
+      single reads: ['/home/comp/zmzhang/stlfr/hlj/example/contigs.fa']
+      merged reads: not specified
+Assembly parameters:
+  k: [21, 33, 55]
+  Repeat resolution is enabled
+  Mismatch careful mode is turned OFF
+  MismatchCorrector will be SKIPPED
+  Coverage cutoff is turned OFF
+Other parameters:
+  Dir for temp files: /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/tmp
+  Threads: 100
+  Memory limit (in Gb): 5000
+

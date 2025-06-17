@@ -1,0 +1,123 @@
+º2---
+max read length: 100
+nomerge max read length: 100
+average read length: 99.8198
+average coverage: 3.09284
+libraries:
+  - type:            paired-end
+    number:          1
+    orientation:     fr
+    interlaced reads:
+      - '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.fq'
+    data:
+      unmerged read length: 100
+      merged read length: 0
+      insert size mean: 162.986
+      insert size deviation: 87.2734
+      insert size left quantile: 86
+      insert size right quantile: 273
+      insert size median: 138
+      insert size mad: 51
+      insert size distribution: { 57: 1, 59: 2, 63: 6, 64: 1, 66: 6, 67: 3, 
+                                  68: 5, 72: 5, 73: 4, 76: 7, 77: 8, 78: 7, 
+                                  79: 11, 80: 9, 81: 1, 82: 6, 84: 2, 85: 1, 
+                                  86: 25, 87: 6, 88: 39, 89: 12, 91: 4, 
+                                  92: 5, 93: 3, 94: 12, 95: 7, 96: 2, 97: 16, 
+                                  98: 3, 99: 12, 100: 4, 101: 11, 102: 11, 
+                                  103: 17, 104: 7, 105: 7, 106: 7, 107: 8, 
+                                  108: 5, 109: 7, 110: 14, 111: 6, 112: 15, 
+                                  115: 2, 116: 8, 117: 13, 118: 10, 119: 10, 
+                                  120: 15, 121: 3, 122: 5, 123: 2, 124: 11, 
+                                  126: 11, 128: 14, 129: 4, 130: 4, 131: 9, 
+                                  133: 4, 134: 3, 135: 9, 136: 5, 137: 6, 
+                                  138: 6, 139: 8, 140: 3, 141: 4, 142: 2, 
+                                  143: 3, 147: 7, 148: 6, 149: 4, 150: 3, 
+                                  151: 5, 152: 3, 153: 3, 154: 10, 155: 8, 
+                                  156: 6, 158: 16, 159: 1, 160: 7, 163: 7, 
+                                  164: 6, 165: 3, 166: 9, 167: 6, 168: 5, 
+                                  169: 6, 172: 14, 173: 8, 174: 3, 177: 5, 
+                                  178: 6, 179: 4, 181: 6, 183: 8, 184: 13, 
+                                  186: 3, 187: 1, 188: 6, 190: 1, 191: 1, 
+                                  193: 2, 194: 11, 196: 6, 197: 3, 198: 2, 
+                                  201: 3, 202: 3, 203: 10, 204: 3, 208: 1, 
+                                  210: 1, 213: 5, 214: 1, 215: 5, 217: 6, 
+                                  218: 7, 219: 6, 220: 15, 222: 1, 223: 4, 
+                                  225: 6, 227: 9, 228: 5, 229: 1, 230: 6, 
+                                  232: 7, 236: 1, 238: 3, 240: 4, 242: 5, 
+                                  245: 5, 246: 4, 247: 1, 248: 1, 251: 1, 
+                                  252: 1, 256: 3, 258: 3, 259: 3, 260: 1, 
+                                  263: 1, 264: 4, 265: 2, 269: 1, 271: 1, 
+                                  273: 9, 278: 3, 279: 1, 283: 5, 287: 2, 
+                                  288: 3, 290: 1, 291: 1, 296: 1, 300: 1, 
+                                  304: 5, 309: 3, 310: 4, 314: 1, 318: 1, 
+                                  326: 2, 332: 1, 335: 1, 336: 1, 343: 1, 
+                                  348: 5, 349: 1, 359: 1, 362: 1, 364: 1, 
+                                  370: 4, 373: 1, 382: 3, 389: 1, 390: 2, 
+                                  393: 3, 397: 3, 415: 1, 416: 1, 418: 1, 
+                                  427: 3, 428: 3, 433: 3, 434: 1, 435: 1, 
+                                  450: 1, 475: 2, 476: 2, 483: 3, 484: 1, 
+                                  487: 1, 499: 1, 506: 2, 512: 1, 531: 2 }
+      pi threshold:    0
+      binary reads info:
+        binary converted: true
+        bin reads info file: '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/.bin_reads/INFO_0'
+        paired read prefix: '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/.bin_reads/paired_0'
+        merged read prefix: '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/.bin_reads/merged_0'
+        single read prefix: '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/.bin_reads/single_0'
+        chunk num:       1
+      single reads mapped: false
+      library index:   0
+      number of reads: 477148
+      total nucleotides: 47628831
+  - type:            untrusted-contigs
+    number:          1
+    single reads:
+      - '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/split_input/contigs.fasta'
+    data:
+      unmerged read length: 599940
+      merged read length: 0
+      insert size mean: 0
+      insert size deviation: 0
+      insert size left quantile: 0
+      insert size right quantile: 0
+      insert size median: 0
+      insert size mad: 0
+      insert size distribution: {  }
+      pi threshold:    0
+      binary reads info:
+        binary converted: true
+        bin reads info file: '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/.bin_reads/INFO_1'
+        paired read prefix: '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/.bin_reads/paired_1'
+        merged read prefix: '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/.bin_reads/merged_1'
+        single read prefix: '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/.bin_reads/single_1'
+        chunk num:       1
+      single reads mapped: false
+      library index:   1
+      number of reads: 1
+      total nucleotides: 599940
+  - type:            path-extend-contigs
+    single reads:
+      - '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K55/first_pe_contigs.fasta'
+    data:
+      unmerged read length: 0
+      merged read length: 0
+      insert size mean: 0
+      insert size deviation: 0
+      insert size left quantile: 0
+      insert size right quantile: 0
+      insert size median: 0
+      insert size mad: 0
+      insert size distribution: {  }
+      pi threshold:    0
+      binary reads info:
+        binary converted: false
+        bin reads info file: ''
+        paired read prefix: ''
+        merged read prefix: ''
+        single read prefix: ''
+        chunk num:       0
+      single reads mapped: true
+      library index:   0
+      number of reads: 0
+      total nucleotides: 0
+...

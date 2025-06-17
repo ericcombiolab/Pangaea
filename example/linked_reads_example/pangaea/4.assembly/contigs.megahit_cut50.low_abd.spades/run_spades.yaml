@@ -1,0 +1,131 @@
+- STAGE: Before start
+  args: []
+  config_dir: ''
+  del_after: []
+  output_files: []
+  path: 'true'
+  short_name: before_start
+- STAGE: Preprocess reads
+  args: []
+  config_dir: ''
+  del_after: []
+  output_files: []
+  path: 'true'
+  short_name: preprocess_start
+- STAGE: Preprocess additional contigs
+  args:
+  - /home/comp/zmzhang/software/SPAdes-3.15.3-Linux/share/spades/spades_pipeline/scripts/preprocess_contigs.py
+  - --args_filename
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/split_input/tmp/contigs
+  - --dst
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/split_input
+  - --threshold_for_breaking_additional_contigs
+  - '10'
+  config_dir: ''
+  del_after: []
+  output_files: []
+  path: /home/comp/zmzhang/software/anaconda3/bin/python
+  short_name: preprocess_ac
+- STAGE: Preprocess reads
+  args: []
+  config_dir: ''
+  del_after: []
+  output_files: []
+  path: 'true'
+  short_name: preprocess_finish
+- STAGE: Assembling
+  args: []
+  config_dir: ''
+  del_after: []
+  output_files: []
+  path: 'true'
+  short_name: as_start
+- STAGE: K21
+  args:
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K21/configs/config.info
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K21/configs/mda_mode.info
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K21/configs/meta_mode.info
+  config_dir: K21
+  del_after: []
+  output_files: []
+  path: /home/comp/zmzhang/software/SPAdes-3.15.3-Linux/bin/spades-core
+  short_name: k21
+- STAGE: K33
+  args:
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K33/configs/config.info
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K33/configs/mda_mode.info
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K33/configs/meta_mode.info
+  config_dir: K33
+  del_after: []
+  output_files: []
+  path: /home/comp/zmzhang/software/SPAdes-3.15.3-Linux/bin/spades-core
+  short_name: k33
+- STAGE: K55
+  args:
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K55/configs/config.info
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K55/configs/mda_mode.info
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K55/configs/meta_mode.info
+  config_dir: K55
+  del_after: []
+  output_files: []
+  path: /home/comp/zmzhang/software/SPAdes-3.15.3-Linux/bin/spades-core
+  short_name: k55
+- STAGE: Copy files
+  args:
+  - /home/comp/zmzhang/software/SPAdes-3.15.3-Linux/share/spades/spades_pipeline/scripts/copy_files.py
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K55/before_rr.fasta
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/before_rr.fasta
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K55/assembly_graph_after_simplification.gfa
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/assembly_graph_after_simplification.gfa
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K55/final_contigs.fasta
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/contigs.fasta
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K55/first_pe_contigs.fasta
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/first_pe_contigs.fasta
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K55/strain_graph.gfa
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/strain_graph.gfa
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K55/scaffolds.fasta
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/scaffolds.fasta
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K55/scaffolds.paths
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/scaffolds.paths
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K55/assembly_graph_with_scaffolds.gfa
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/assembly_graph_with_scaffolds.gfa
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K55/assembly_graph.fastg
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/assembly_graph.fastg
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/K55/final_contigs.paths
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/contigs.paths
+  config_dir: ''
+  del_after:
+  - .bin_reads
+  - tmp/spades_v0g6bkut
+  output_files: []
+  path: /home/comp/zmzhang/software/anaconda3/bin/python
+  short_name: copy_files
+- STAGE: Assembling
+  args: []
+  config_dir: ''
+  del_after: []
+  output_files: []
+  path: 'true'
+  short_name: as_finish
+- STAGE: Breaking scaffolds
+  args:
+  - /home/comp/zmzhang/software/SPAdes-3.15.3-Linux/share/spades/spades_pipeline/scripts/breaking_scaffolds_script.py
+  - --result_scaffolds_filename
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/scaffolds.fasta
+  - --misc_dir
+  - /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/misc
+  - --threshold_for_breaking_scaffolds
+  - '3'
+  config_dir: ''
+  del_after: []
+  output_files: []
+  path: /home/comp/zmzhang/software/anaconda3/bin/python
+  short_name: bs
+- STAGE: Terminate
+  args: []
+  config_dir: ''
+  del_after:
+  - configs
+  output_files: []
+  path: 'true'
+  short_name: terminate

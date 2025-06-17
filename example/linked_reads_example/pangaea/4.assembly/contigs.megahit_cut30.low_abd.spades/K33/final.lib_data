@@ -1,0 +1,60 @@
+“---
+max read length: 100
+nomerge max read length: 100
+average read length: 99.8205
+average coverage: 4.87955
+libraries:
+  - type:            paired-end
+    number:          1
+    orientation:     fr
+    interlaced reads:
+      - '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut30.low_abd.fq'
+    data:
+      unmerged read length: 100
+      merged read length: 0
+      insert size mean: 0
+      insert size deviation: 0
+      insert size left quantile: 0
+      insert size right quantile: 0
+      insert size median: 0
+      insert size mad: 0
+      insert size distribution: {  }
+      pi threshold:    0
+      binary reads info:
+        binary converted: true
+        bin reads info file: '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut30.low_abd.spades/.bin_reads/INFO_0'
+        paired read prefix: '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut30.low_abd.spades/.bin_reads/paired_0'
+        merged read prefix: '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut30.low_abd.spades/.bin_reads/merged_0'
+        single read prefix: '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut30.low_abd.spades/.bin_reads/single_0'
+        chunk num:       1
+      single reads mapped: false
+      library index:   0
+      number of reads: 476618
+      total nucleotides: 47576265
+  - type:            untrusted-contigs
+    number:          1
+    single reads:
+      - '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut30.low_abd.spades/split_input/contigs.fasta'
+    data:
+      unmerged read length: 599940
+      merged read length: 0
+      insert size mean: 0
+      insert size deviation: 0
+      insert size left quantile: 0
+      insert size right quantile: 0
+      insert size median: 0
+      insert size mad: 0
+      insert size distribution: {  }
+      pi threshold:    0
+      binary reads info:
+        binary converted: true
+        bin reads info file: '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut30.low_abd.spades/.bin_reads/INFO_1'
+        paired read prefix: '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut30.low_abd.spades/.bin_reads/paired_1'
+        merged read prefix: '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut30.low_abd.spades/.bin_reads/merged_1'
+        single read prefix: '/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut30.low_abd.spades/.bin_reads/single_1'
+        chunk num:       1
+      single reads mapped: false
+      library index:   1
+      number of reads: 1
+      total nucleotides: 599940
+...

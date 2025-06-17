@@ -1,0 +1,242 @@
+import os
+import glob
+from pathlib import Path
+import git
+import snakemake
+
+localrules: faidx, extract_bigtigs, circularize_final
+
+#extract samplename from config
+sample = config['sample_name']
+contigs = config['contigs']
+reads = config['reads']
+
+rule all:
+	input:
+		"{sample}/3.circularization/4.{sample}_circularized.fasta".format(sample = sample), #request final output
+
+#Circularization
+#########################################################
+checkpoint extract_bigtigs:
+	#Only genome-scale contigs are tested for circularity. This rule defines what size that is and extracts those contigs
+	#to individual fasta files.
+	input:
+		contigs,
+		contigs + ".fai",
+	output: directory("{sample}/3.circularization/1.candidate_genomes/")
+	params:
+		min_size = 1700000
+	shell:
+		"""
+		cat {input[1]} | awk '{{if ($2 > {params.min_size}) print $1}}' | xargs -n 1 -I foo sh -c "
+			samtools faidx {input[0]} foo > {sample}/3.circularization/1.candidate_genomes/foo.fa
+		"
+		"""
+
+rule circularize_bam2reads:
+	#Extracts reads mapping to the genome-scale contigs to be tested for circularity. These reads are reformatted to fastq and compressed.
+	input:
+		contigs + '.bam',
+		"{sample}/3.circularization/1.candidate_genomes/{tig}.fa",
+		contigs + '.bam.bai',
+	output:
+		"{sample}/3.circularization/2.circularization/spanning_tig_circularization/{tig}/{tig}_terminal_reads.fq.gz"
+	shell:
+		"""
+		(samtools idxstats {input[0]} | grep {wildcards.tig} | awk '{{if ($2 > 50000) print $1, ":", $2-50000, "-", $2; else print $1, ":", 1, "-", $2 }}' | tr -d ' ';
+		 samtools idxstats {input[0]} | grep {wildcards.tig} | awk '{{if ($2 > 50000) print $1, ":", 1, "-", 50000; else print $1, ":", 1, "-", $2 }}' | tr -d ' ') |
+		xargs -I foo sh -c 'samtools view -h {input[0]} foo | samtools fastq - || true' | paste - - - - | sort | uniq | tr '\t' '\n' | bgzip > {output}
+		"""
+
+rule circularize_assemble:
+	#Reads extracted in circularize_bam2reads are assembled with Canu in order to recover a contig spanning the two
+	#ends of a circular genome contig
+	input:
+		rules.circularize_bam2reads.output
+	output: "{sample}/3.circularization/2.circularization/spanning_tig_circularization/{tig}/assembly.fasta"
+	params:
+		directory="{sample}/3.circularization/2.circularization/spanning_tig_circularization/{tig}",
+	resources:
+		time=4,
+		mem=32
+	threads: 4
+	shell:
+		"""
+		flye -t {threads} --subassemblies {input} -o {params.directory} -g 1m
+		"""
+
+rule circularize_spantig_pre:
+	#Prepare to determine if the contig assembled in circularize_assemble actually spans the two ends of the putative genome contig.
+	#Preparation entails performing an alignment of the potentially spanning contig to the putative genome contig and post-processing
+	#the result.
+	input:
+		"{sample}/3.circularization/1.candidate_genomes/{tig}.fa", #rules.extract_bigtigs.output
+		rules.circularize_assemble.output,
+		rules.circularize_assemble.output[0] + '.fai'
+	output:
+		"{sample}/3.circularization/2.circularization/spanning_tig_circularization/{tig}/potential_circularization_alignments.tsv"
+	params:
+		directory = "{sample}/3.circularization/2.circularization/spanning_tig_circularization/{tig}",
+		prefix="spanning_tigs_to_ref"
+	threads: 4
+	resources:
+		time=4,
+		mem=16
+	shell:
+		"""
+		nucmer -b 5000 {input[0]} {input[1]} -p {params.directory}/{params.prefix} #-t {threads} #reverted nucmer back down to 3, no more multithreading :(
+
+		delta-filter -q {params.directory}/{params.prefix}.delta > {params.directory}/{params.prefix}.filt.delta
+
+		show-coords -Tq {params.directory}/{params.prefix}.filt.delta | cut -f8,9 | sed '1,3d' | sort | \
+		uniq -c | tr -s ' ' '\\t' | cut -f2-99 | grep -v ^1 | cut -f2,3 > {params.directory}/potential_circularizations.tsv || true
+
+		show-coords -Tql {params.directory}/{params.prefix}.filt.delta | grep -f {params.directory}/potential_circularizations.tsv | cat > {output} || true
+		"""
+
+rule circularize_spantig:
+	#Run the script which determines if the putative genome contig is spanned by the smaller contig assembled from terminal reads,
+	#indicating circularity.
+	input: rules.circularize_spantig_pre.output
+	output: "{sample}/3.circularization/2.circularization/spanning_tig_circularization/{tig}/contig_spanned.txt"
+	params:
+		margin=10000
+	script:
+		"scripts/spancircle.py"
+
+rule circularize_span_trim:
+	#Trim circularized genome contigs at the determined wrap-around point
+	input:
+		rules.circularize_spantig.output,
+		rules.extract_bigtigs.output[0] + '{tig}.fa',
+		rules.extract_bigtigs.output[0] + '{tig}.fa.fai',
+		rules.circularize_assemble.output,
+		rules.circularize_assemble.output[0] + '.fai'
+	output:
+		"{sample}/3.circularization/3.circular_sequences/sh/{tig}_span_trim.sh"
+	params:
+		outfa = "{sample}/3.circularization/3.circular_sequences/{tig}_spanned.fa"
+	run:
+		span_out = open(input[0], 'r').readlines()
+		cmd = ''
+		if span_out == ['done\n'] or span_out[0].strip() == 'no circularizations': #no circularization occurred
+			print('Nothing to do')
+		else:
+			trim = span_out[0].strip()
+			trim_cmd = 'samtools faidx ' + input[1] + ' ' + trim + " > " + params.outfa + "\n"
+			cmd += trim_cmd
+
+			if len(span_out) == 3:
+				extend = span_out[1].strip()
+				if input[3].split('/')[-1].split('.')[0] == extend.split(':')[0]:
+					extend_cmd = 'samtools faidx ' + input[3] + ' ' + extend + " | grep -v '>'" + " >> " + params.outfa + "\n"
+					cmd += extend_cmd
+
+		open(output[0], 'w').write(cmd + '\n')
+
+def aggregate_span_trim(wildcards):
+	#Collect the genome sequences produced by spanning contig circularization
+	checkpoint_output = checkpoints.extract_bigtigs.get(**wildcards).output[0]
+	result = expand(rules.circularize_span_trim.output, #"{sample}/3.circularization/3.circular_sequences/sh/{tig}_span_trim.sh",
+		sample=wildcards.sample,
+		tig=glob_wildcards(os.path.join(checkpoint_output, '{tig}.fa')).tig)
+	return(result)
+
+rule circularize_overcirc:
+	#Test putative genome contigs for circularity by self-alignment and determination of 'overcircularization',
+	#assembly beyond the circular wraparound point. This produces redundant sequences at the termini of the putative
+	#genome contig which can be determined by corner-cutting off-diagonal alignments in a self-alignment dotplot.
+	input:
+		"{sample}/3.circularization/1.candidate_genomes/{tig}.fa"
+	output: "{sample}/3.circularization/2.circularization/overcircularized/overcirc_{tig}.txt"
+	params:
+		delta = '{sample}/3.circularization/2.circularization/overcircularized/{tig}'
+	threads: 8
+	script:
+		"scripts/encircle.py"
+
+rule circularize_overcirc_trim:
+	#Trim the genome contig circularized by overcircularization detection according to the determined wraparound point.
+	input:
+		rules.circularize_overcirc.output,
+		rules.extract_bigtigs.output[0] + "{tig}.fa",
+		rules.extract_bigtigs.output[0] + '{tig}.fa.fai',
+		rules.circularize_assemble.output,
+		rules.circularize_assemble.output[0] + '.fai'
+	output:
+		"{sample}/3.circularization/3.circular_sequences/sh/{tig}_span_overcirc.sh"
+	params:
+		outfa = "{sample}/3.circularization/3.circular_sequences/{tig}_overcirc.fa"
+	run:
+		span_out = open(input[0], 'r').readlines()
+		cmd = ''
+		if span_out == ['done\n']: #no circularization occurred
+			print('No over-circularization')
+		else:
+			trim = span_out[0].strip()
+			trim_cmd = 'samtools faidx ' + input[1] + ' ' + trim + " > " + params.outfa + "\n"
+			cmd += trim_cmd
+
+		open(output[0], 'w').write(cmd + '\n')
+
+def aggregate_overcirc_trim(wildcards):
+	#Collect the circular genome sequences obtained by overcircularization detection.
+	checkpoint_output = checkpoints.extract_bigtigs.get(**wildcards).output[0]
+	result = expand(rules.circularize_overcirc_trim.output, #"{sample}/3.circularization/3.circular_sequences/sh/{tig}_span_overcirc.sh",
+		sample=wildcards.sample,
+		tig=glob_wildcards(os.path.join(checkpoint_output, '{tig}.fa')).tig)
+	return(result)
+
+rule circularize_final:
+	#Collect the circular genome sequences and add them back into the total assembly fasta files
+	#This is done by generating a .sh file for each putative genome which either yields the circularized
+	#sequence or no sequence, depending on whether circularization was successful.
+	input:
+		contigs,
+		contigs + '.fai',
+		aggregate_overcirc_trim,
+		aggregate_span_trim
+	output:
+		'{sample}/3.circularization/4.{sample}_circularized.fasta'
+	threads: 1
+	shell:
+		"""
+		find {sample}/3.circularization/3.circular_sequences/sh/ -type f | xargs cat | bash
+		ls {sample}/3.circularization/3.circular_sequences/ | grep .fa$ | cut -f1-2 -d '_' > circs.tmp || true
+		(cat {input[1]} | grep -vf circs.tmp |
+		cut -f1 | xargs samtools faidx {input[0]}; ls {sample}/3.circularization/3.circular_sequences/* | grep .fa$ | xargs cat) |
+		tr -d '\\n' | sed 's/\\(>[contigscaffold_]*[0-9]*\\)/\\n\\1\\n/g' | fold -w 120 | cut -f1 -d ':' | grep -v '^$' > {output} || true
+		rm circs.tmp
+		"""
+
+#Utility functions
+#########################################################
+
+rule align_bam:
+	#Align long reads to a fasta, storing the result in .bam format.
+	input:
+		'{ref}.f{asta}', #the asta bit makes this work for .fa and .fasta files
+		reads
+	output:
+		"{ref}.f{asta}.bam"
+	threads: 16
+	resources:
+		time=6,
+		mem=16
+	shell:
+		"minimap2 -t {threads} -ax asm5 {input} | samtools sort --threads {threads} > {output}"
+
+rule bam_idx:
+	#index a .bam file
+	input:
+		'{some}.bam'
+	output:
+		'{some}.bam.bai'
+	shell:
+		"samtools index {input}"
+
+rule faidx:
+	#index a .fasta file
+	input: '{something}.f{asta}'
+	output: '{something}.f{asta}.fai'
+	shell: "samtools faidx {input}"
