@@ -1,37 +1,17 @@
 # Python
 **/__pycache__/
-*.py[cod]
-*.so
-.pytest_cache/
-
-# IDE
-.vscode/
+**/.vscode/
 
 # Snakemake
-.snakemake/
+**/.snakemake/
 
 # CMake
-build/
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
-*.cmake
-Makefile
-*.ninja
-*.a
-*.o
-
-# Binaries
-bin/
-*.out
-*.so
-*.a
-
-# Temporary files
-*~
-*.swp
-*.swo
-*.tmp
-
-# System files
-.directory
+**/build/
+**/CMakeFiles/
+**/CMakeCache.txt
+**/cmake_install.cmake
+**/*.cmake
+**/Makefile
+**/*.a
+**/*.o
+**/bin/
