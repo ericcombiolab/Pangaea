@@ -1,3 +1,0 @@
-sample_name: "circular"
-contigs: "merged_out.fasta"
-reads: "../contigs.low_abd.binning.local.fa"

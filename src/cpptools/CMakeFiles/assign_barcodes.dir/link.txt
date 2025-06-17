@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -fopenmp CMakeFiles/assign_barcodes.dir/assign_barcodes.cpp.o -o /Poppy/zmzhang/software/Pangaea/src/bin/assign_barcodes   -L/Poppy/zmzhang/software/anaconda3/envs/pangaea/lib  -Wl,-rpath,/Poppy/zmzhang/software/anaconda3/envs/pangaea/lib -lpthread lib/gzstream/libgzstream.a -lz 

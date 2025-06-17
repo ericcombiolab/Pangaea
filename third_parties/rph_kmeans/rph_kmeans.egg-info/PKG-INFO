@@ -1,5 +1,5 @@
 Metadata-Version: 2.1
-Name: rph-kmeans
+Name: rph_kmeans
 Version: 1.0.0
 Summary: KMeans algorithm with initial centers produced by random projection point reduction process.
 Home-page: https://github.com/tinglabs/rph_kmeans
@@ -7,6 +7,11 @@ Author: Yu Huang
 Author-email: yuhuang-cst@foxmail.com
 License: LICENSE
 License-File: LICENSE
+Requires-Dist: setuptools>=40.6.3
+Requires-Dist: numpy>=1.15.4
+Requires-Dist: scipy>=1.1.0
+Requires-Dist: scikit_learn>=0.21.0
+Requires-Dist: kneed>=0.5.1
 
 # RPH-KMeans 
 

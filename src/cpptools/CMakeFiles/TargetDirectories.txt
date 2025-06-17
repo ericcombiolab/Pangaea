@@ -1,0 +1,12 @@
+/Poppy/zmzhang/software/Pangaea/src/cpptools/CMakeFiles/count_kmer.dir
+/Poppy/zmzhang/software/Pangaea/src/cpptools/CMakeFiles/count_tnf.dir
+/Poppy/zmzhang/software/Pangaea/src/cpptools/CMakeFiles/extract_reads.dir
+/Poppy/zmzhang/software/Pangaea/src/cpptools/CMakeFiles/parse_header.dir
+/Poppy/zmzhang/software/Pangaea/src/cpptools/CMakeFiles/assign_barcodes.dir
+/Poppy/zmzhang/software/Pangaea/src/cpptools/CMakeFiles/extract_unmapped.dir
+/Poppy/zmzhang/software/Pangaea/src/cpptools/CMakeFiles/add_barcode.dir
+/Poppy/zmzhang/software/Pangaea/src/cpptools/CMakeFiles/edit_cache.dir
+/Poppy/zmzhang/software/Pangaea/src/cpptools/CMakeFiles/rebuild_cache.dir
+/Poppy/zmzhang/software/Pangaea/src/cpptools/lib/gzstream/CMakeFiles/gzstream.dir
+/Poppy/zmzhang/software/Pangaea/src/cpptools/lib/gzstream/CMakeFiles/edit_cache.dir
+/Poppy/zmzhang/software/Pangaea/src/cpptools/lib/gzstream/CMakeFiles/rebuild_cache.dir
