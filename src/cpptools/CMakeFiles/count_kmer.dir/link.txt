@@ -1,1 +1,0 @@
-/usr/bin/c++ -O3 CMakeFiles/count_kmer.dir/count_kmer.cpp.o -o /Poppy/zmzhang/software/Pangaea/src/bin/count_kmer   -L/Poppy/zmzhang/software/anaconda3/envs/pangaea/lib  -Wl,-rpath,/Poppy/zmzhang/software/anaconda3/envs/pangaea/lib -lpthread lib/gzstream/libgzstream.a -lz 

@@ -1,1 +1,0 @@
-/usr/bin/c++ -O3 CMakeFiles/extract_reads.dir/extract_reads.cpp.o -o /Poppy/zmzhang/software/Pangaea/src/bin/extract_reads   -L/Poppy/zmzhang/software/anaconda3/envs/pangaea/lib  -Wl,-rpath,/Poppy/zmzhang/software/anaconda3/envs/pangaea/lib -lpthread lib/gzstream/libgzstream.a -lz 

@@ -1,1 +1,0 @@
-/usr/bin/c++ -O3 -fopenmp CMakeFiles/add_barcode.dir/add_barcode.cpp.o -o /Poppy/zmzhang/software/Pangaea/src/bin/add_barcode   -L/Poppy/zmzhang/software/anaconda3/envs/pangaea/lib  -Wl,-rpath,/Poppy/zmzhang/software/anaconda3/envs/pangaea/lib -lpthread lib/gzstream/libgzstream.a /Poppy/zmzhang/software/anaconda3/envs/pangaea/lib/libhts.so -lz 
