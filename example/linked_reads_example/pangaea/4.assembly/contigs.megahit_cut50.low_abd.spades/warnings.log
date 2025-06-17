@@ -1,4 +1,0 @@
-
-=== Error correction and assembling warnings:
- * 0:01:46.001    75M / 412M  WARN   ScaffoldingUniqueEdgeAna (scaff_supplementary.cpp   :  72)   Less than half of genome in unique edges!
-======= Warnings saved to /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut50.low_abd.spades/warnings.log

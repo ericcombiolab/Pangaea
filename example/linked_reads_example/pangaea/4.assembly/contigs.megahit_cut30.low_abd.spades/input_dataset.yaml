@@ -1,9 +1,0 @@
-- "interlaced reads":
-  - "/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut30.low_abd.fq"
-  "number": !!int "1"
-  "orientation": "fr"
-  "type": "paired-end"
-- "number": !!int "1"
-  "single reads":
-  - "/home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut30.low_abd.spades/split_input/contigs.fasta"
-  "type": "untrusted-contigs"

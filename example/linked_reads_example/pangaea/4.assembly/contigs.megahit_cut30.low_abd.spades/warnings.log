@@ -1,6 +1,0 @@
-
-=== Error correction and assembling warnings:
- * 0:01:44.680    75M / 415M  WARN    General                 (coverage_uniformity_analyz:  74)    No edges longer than length bound(2000)
- * 0:01:44.681    75M / 415M  WARN   ScaffoldingUniqueEdgeAna (scaff_supplementary.cpp   :  35)   not enough edges longer than 2000
- * 0:01:44.682    75M / 415M  WARN   ScaffoldingUniqueEdgeAna (scaff_supplementary.cpp   :  72)   Less than half of genome in unique edges!
-======= Warnings saved to /home/comp/zmzhang/stlfr/hlj/example/pangaea/4.assembly/contigs.megahit_cut30.low_abd.spades/warnings.log

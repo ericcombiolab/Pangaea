@@ -80,7 +80,7 @@ def run(seeds, local, outdir):
         for _ in range(5):
             os.system("seqtk seq -L 1000 {} >> {}".format(seeds, seedsfa_path))
         concat_files([premergedfiltfa_path, seedsfa_path], mergedfiltfa_path)
-        os.system("{} {} contig_ > {}".format(os.path.join(script_path, "parse_header"), mergedfiltfa_path, mergedfiltfa_path+'.tmp'))
+        os.system("{} {} contig_ > {}".format(os.path.join(script_path, "..", "bin", "parse_header"), mergedfiltfa_path, mergedfiltfa_path+'.tmp'))
         os.system("mv {} {}".format(mergedfiltfa_path+'.tmp', mergedfiltfa_path))
 
     flye0_path = os.path.join(outdir, "flye-asm-1")

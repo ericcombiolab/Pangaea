@@ -16,7 +16,7 @@ if [ $low_assembler == "spades" ];then
 else 
     cat $assembly_dir/*.megahit/final.contigs.fa $cluster_dir/contigs.megahit.fa $local_assembly > $assembly_dir/contigs.low_abd.binning.local.fa
 fi
-$BINDIR/parse_header $assembly_dir/contigs.low_abd.binning.local.fa contig_ > $assembly_dir/contigs.low_abd.binning.local.renamed.fa
+$BINDIR/../bin/parse_header $assembly_dir/contigs.low_abd.binning.local.fa contig_ > $assembly_dir/contigs.low_abd.binning.local.renamed.fa
 mv $assembly_dir/contigs.low_abd.binning.local.renamed.fa $assembly_dir/contigs.low_abd.binning.local.fa
 
 $BINDIR/merge_olc.py $contigs $assembly_dir/contigs.low_abd.binning.local.fa $assembly_dir/contigs.low_abd.binning.local.asm
@@ -30,7 +30,7 @@ cd $assembly_dir/quickmerge
 
 # quickmerge
 merge_wrapper.py ../contigs.low_abd.binning.local.asm/final.asm.fa $athena
-$BINDIR/parse_header merged_out.fasta contig_ > merged_out.renamed.fasta
+$BINDIR/../bin/parse_header merged_out.fasta contig_ > merged_out.renamed.fasta
 mv merged_out.renamed.fasta merged_out.fasta
 
 echo 'sample_name: "circular"' > circular.yaml

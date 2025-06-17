@@ -67,7 +67,7 @@ def run(args, script_path):
     else:
         # extract features
         if (args.reads1 and args.reads2) or args.interleaved_reads:
-            read_specify, abundance, tnf = Feature( args, script_path).extract_features()
+            read_specify, abundance, tnf = Feature(args, script_path).extract_features()
         else:
             print("Please provide one or two input file(s):-1 and -2 for pair-end linked reads; -lr as long reads; -i for interleaved linked reads.")
             exit()

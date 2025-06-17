@@ -36,8 +36,7 @@ class RPPointReducerBase(object):
 	def get_sample_dist(self, X):
 		return paired_distances(
 			X[np.random.choice(X.shape[0], self.sample_dist_num)],
-			X[np.random.choice(X.shape[0], self.sample_dist_num)],
-			'euclidean'
+			X[np.random.choice(X.shape[0], self.sample_dist_num)]
 		)
 
 

@@ -8,7 +8,7 @@ dependencies:
   - pip
   - snakemake
   - bioconda::pysam
-  - bioconda::flye
+  - bioconda::flye=2.8.3
   - bioconda::megahit
   - biopython
   - bioconda::jellyfish
@@ -19,6 +19,7 @@ dependencies:
   - bioconda::metaphlan
   - bioconda::spades
   - bioconda::quickmerge
+  - pigz
   - pip:
     - scikit-learn
     - pandas

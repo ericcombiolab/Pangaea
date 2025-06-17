@@ -22,10 +22,10 @@ def clustering_rph_kmeans(embedding, k):
 def save_clustering_result(args, outdir, reads, clusters, barcodes, script_path):
     snakemake = os.path.join(script_path, "bin", "Lathe", "Snakefile")
     extract_reads = os.path.join(script_path, "bin", "extract_reads")
-    bin_assembly = os.path.join(script_path, "bin", "bin_assembly.sh")
-    low_abd_reads = os.path.join(script_path, "bin", "low_abd_reads.sh")
-    low_assembly = os.path.join(script_path, "bin", "low_assembly.sh")
-    merge_asm = os.path.join(script_path, "bin", "merge_asm.sh")
+    bin_assembly = os.path.join(script_path, "scripts", "bin_assembly.sh")
+    low_abd_reads = os.path.join(script_path, "scripts", "low_abd_reads.sh")
+    low_assembly = os.path.join(script_path, "scripts", "low_assembly.sh")
+    merge_asm = os.path.join(script_path, "scripts", "merge_asm.sh")
 
     cluster_dir = os.path.join(outdir, "3.clustering")
     if not os.path.isdir(cluster_dir):
@@ -130,11 +130,11 @@ def cluster_barcode_reads(args, model_path, cluster_path, script_path, range_ste
 
 
 def final_assemble(args, cluster_path, assembly_path, script_path):
-    snakemake = os.path.join(script_path, "bin", "Lathe", "Snakefile")
-    bin_assembly = os.path.join(script_path, "bin", "bin_assembly.sh")
-    low_abd_reads = os.path.join(script_path, "bin", "low_abd_reads.sh")
-    low_assembly = os.path.join(script_path, "bin", "low_assembly.sh")
-    merge_asm = os.path.join(script_path, "bin", "merge_asm.sh")
+    snakemake = os.path.join(script_path, "..", "third_parties", "Lathe", "Snakefile")
+    bin_assembly = os.path.join(script_path, "scripts", "bin_assembly.sh")
+    low_abd_reads = os.path.join(script_path, "scripts", "low_abd_reads.sh")
+    low_assembly = os.path.join(script_path, "scripts", "low_assembly.sh")
+    merge_asm = os.path.join(script_path, "scripts", "merge_asm.sh")
     threads = args.threads
     cutoff = args.low_abd_cut
     cutoff = cutoff.split(',')

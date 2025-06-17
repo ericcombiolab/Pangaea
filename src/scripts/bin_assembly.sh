@@ -26,7 +26,7 @@ if [ ! -f $assembly_dir/contigs.megahit.name_sorted.bam ]; then
         done
         wait
         cat $cluster_dir/*.megahit/final.contigs.fa > $cluster_dir/contigs.megahit.fa
-        $BINDIR/parse_header $cluster_dir/contigs.megahit.fa contig_ > $cluster_dir/contigs.megahit.renamed.fa
+        $BINDIR/../bin/parse_header $cluster_dir/contigs.megahit.fa contig_ > $cluster_dir/contigs.megahit.renamed.fa
         mv $cluster_dir/contigs.megahit.renamed.fa $cluster_dir/contigs.megahit.fa
     fi
 

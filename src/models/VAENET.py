@@ -108,6 +108,11 @@ class VAENET:
                         total_loss_val.append(unlab_loss_dic['total'].item())
                         barcodes.extend(data["bc"])
                 logging.info(f"epoch {epoch}/{self.num_epochs} batch {batch+1}/{len(train_loader)}: train {np.average(total_loss):.8f} abd {np.average(abd_loss):.8f} tnf {np.average(tnf_loss):.8f} kl {np.average(kl_loss):.8f} | test {np.average(total_loss_val):.8f}")
+                if len(train_loader) % 100 != 0:
+                    early(np.average(total_loss_val), self.network)
+                    if early.early_stop:
+                        logging.info("early stop triggered")
+                        break
                 total_loss = []
                 abd_loss = []
                 tnf_loss = []
