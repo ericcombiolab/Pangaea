@@ -1,8 +1,41 @@
 reads_type="10x"
 # thread=150
 
-root=`pwd`
-conda_path="/home/comp/zmzhang/software/anaconda3"
+CURRENT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+root=$CURRENT_DIR/../../
+
+# Define the function to check and activate a Conda environment
+activate_conda_env() {
+    # The first argument is the target environment name
+    local TARGET_ENV="$1"
+
+    # Get the current active Conda environment
+    local CURRENT_ENV="$CONDA_DEFAULT_ENV"
+
+    # Check if the current environment is not the target environment
+    if [[ "$CURRENT_ENV" != "$TARGET_ENV" ]]; then
+        echo "The current Conda environment is not: $TARGET_ENV, it is: $CURRENT_ENV"
+        echo "Activating the target environment: $TARGET_ENV"
+
+        # Initialize Conda for this shell (required for using `conda activate` in scripts)
+        eval "$(conda shell.bash hook)"
+        
+        # Activate the target Conda environment
+        conda activate "$TARGET_ENV"
+
+        # Verify if the activation was successful
+        if [[ "$CONDA_DEFAULT_ENV" == "$TARGET_ENV" ]]; then
+            echo "The target environment $TARGET_ENV has been successfully activated."
+        else
+            echo "Failed to activate the target environment $TARGET_ENV. Please check your Conda configuration."
+            return 1
+        fi
+    else
+        # If the current environment is already the target
+        echo "The current Conda environment is already: $TARGET_ENV"
+    fi
+}
+
 
 #interleaved_reads=${root}/interleaved_link_reads.sorted.fastq
 #metaspades_contigs=${root}/contigs_to_merge/metaspades_contigs.fasta
@@ -27,15 +60,22 @@ if [ ! -f $metaspades_contigs ];then
     exit 1
 fi
 
-#Check if the conda env is xiaojin_pangaea
-if [ $CONDA_DEFAULT_ENV != "xiaojin_pangaea" ];then
-    echo "`date "+%Y-%m-%d %H:%M:%S"` Current conda env is not xiaojin_pangaea, activate it"
-    source ${conda_path}/bin/activate xiaojin_pangaea
-    if [ $CONDA_DEFAULT_ENV != "xiaojin_pangaea" ];then
-        echo "`date "+%Y-%m-%d %H:%M:%S"` Activate xiaojin_pangaea failed"
-        exit 1
-    fi
-fi
+# print command
+echo "$0 $*"
+pangaea_env="pangaea-test"
+athena_env="athena-meta"
+# Activate the Conda environment
+activate_conda_env "$pangaea_env"
+
+# #Check if the conda env is xiaojin_pangaea
+# if [ $CONDA_DEFAULT_ENV != "xiaojin_pangaea" ];then
+#     echo "`date "+%Y-%m-%d %H:%M:%S"` Current conda env is not xiaojin_pangaea, activate it"
+#     source ${conda_path}/bin/activate xiaojin_pangaea
+#     if [ $CONDA_DEFAULT_ENV != "xiaojin_pangaea" ];then
+#         echo "`date "+%Y-%m-%d %H:%M:%S"` Activate xiaojin_pangaea failed"
+#         exit 1
+#     fi
+# fi
 
 
 echo "`date "+%Y-%m-%d %H:%M:%S"` ============athena Pipeline start at `date`============"
@@ -87,13 +127,8 @@ fi
 
 if [ ! -f ${athena_out}/results/olc/athena.asm.fa ]; then
     echo "`date "+%Y-%m-%d %H:%M:%S"`  Branch 2 - step 6: run athena"
-    source ${conda_path}/bin/activate python2
-    if [ $CONDA_DEFAULT_ENV == "python2" ];then
-        echo "`date "+%Y-%m-%d %H:%M:%S"` python2 activated"
-    else
-        echo "`date "+%Y-%m-%d %H:%M:%S"` python2 not activated"
-        exit
-    fi
+    # Activate the athena-meta Conda environment
+    activate_conda_env "$athena_env"
     cd ${athena_out}/
     echo "`date "+%Y-%m-%d %H:%M:%S"` athena-meta --config config.json"
     athena-meta --config config.json
