@@ -182,55 +182,31 @@ bash build.sh
 # bash src/hybrid/hybrid_wrapper.sh -l <longreads> -r <short_R1> -R <short_R2> [-i <identity>] [-t <type>] [-a <athena_lc>] [-A <athena_out>] [-o <output_dir>]
 nohup bash src/hybrid/hybrid_wrapper.sh -l example/hybrid_example/atcc_longreads_small.fastq.gz -r example/hybrid_example/atcc_short_R1.fastq.gz -R example/hybrid_example/atcc_short_R2.fastq.gz -i 60 -t operams -o hybrid_out > hybrid.log 2>&1 &
 ```
+
 If you encountered the Glibc problem
 ```
 ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.26' not found
 ```
 You can install a compatible GCC version directly within Conda:
 
-1. **Install GCC in Your Conda Environment**:
+1. Install GCC in Your Conda Environment:
    ```bash
    conda install -c conda-forge gcc_linux-64 gxx_linux-64 cmake
    ```
 
-2. **Verify the Installation**:
+2. Verify the Installation:
    ```bash
    strings $CONDA_PREFIX/lib/libstdc++.so.6 | grep GLIBCXX
    ```
-
    Ensure `GLIBCXX_3.4.26` is listed.
 
-3. **Link the Updated Libraries**:
+3. Link the Updated Libraries:
    Export the `LD_LIBRARY_PATH` to point to the Conda environment's libraries:
    ```bash
    export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
    ```
 
----
-
-### **Test the Fix**
-
-After updating `libstdc++`, test your script again:
-
-```bash
-python /datahome/datasets/ericteam/csjxiao/Project/Pangaea_git/Pangaea_git_revise_250618/Pangaea/src/pangaea.py
-```
-
-If the issue is fixed, the script should run without errors.
-
----
-
-### **Summary of Fixes**
-1. Use `strings /lib64/libstdc++.so.6 | grep GLIBCXX` to check your `GLIBCXX` versions.
-2. Update GCC and `libstdc++`:
-   - System-wide (if you have root access).
-   - Locally (if you don’t have root access).
-   - Within a Conda environment (using `gcc_linux-64` from `conda-forge`).
-3. Verify the new `GLIBCXX_3.4.26` is available and retry running your script.
-
-This should resolve the `GLIBCXX_3.4.26` error. Let me know if you encounter further issues!
-
-The generated final assembly will be at ```pangaea_out/final.asm.fa```.
+The generated final assembly will be at ```hybrid_out/pangaea_out/final.asm.fa```.
 
 This may take about 1~2 hours. 
 
