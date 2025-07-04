@@ -62,7 +62,7 @@ fi
 
 # print command
 echo "$0 $*"
-pangaea_env="pangaea-test"
+pangaea_env="pangaea"
 athena_env="athena-meta"
 # Activate the Conda environment
 activate_conda_env "$pangaea_env"
@@ -130,14 +130,9 @@ if [ ! -f ${athena_out}/results/olc/athena.asm.fa ]; then
     # Activate the athena-meta Conda environment
     activate_conda_env "$athena_env"
     cd ${athena_out}/
-    echo "`date "+%Y-%m-%d %H:%M:%S"` athena-meta --config config.json"
-    athena-meta --config config.json
+    echo "`date "+%Y-%m-%d %H:%M:%S"` athena-meta --force_reads --config config.json"
+    athena-meta --force_reads --config config.json
     cd -
 fi
-
-# wait all steps to be done
-wait
-
-
 
 echo "`date "+%Y-%m-%d %H:%M:%S"` ============athena Pipeline end at `date`============"

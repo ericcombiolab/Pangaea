@@ -16,6 +16,10 @@ cd ../../
 
 # build cpp bins
 cd src/cpptools
-cmake .
+if [ -d "build" ]; then
+  rm -rf build
+fi
+mkdir build && cd build
+cmake ..
 make
-cd ../../
+cd ../../../

@@ -19,8 +19,13 @@ dependencies:
   - bioconda::metaphlan
   - bioconda::spades
   - bioconda::quickmerge
-  - conda-forge::cmake
+  - bioconda::htslib
+  - bioconda::metaplatanus
+  - conda-forge::cmake=3.29.4
+  - conda-forge::gcc_linux-64=15.1.0
+  - conda-forge::gxx_linux-64=15.1.0
   - pigz
+  - fastq-tools
   - pip:
     - scikit-learn
     - pandas

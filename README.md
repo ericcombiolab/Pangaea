@@ -159,63 +159,41 @@ The generated final assembly will be at ```pangaea/final.asm.fa```.
 
 This may take about 1~2 hours. 
 
+- A pipeline wrapper for linked reads assembly：
+```
+# This wrapper automatically run athena-meta, metaspades and pangaea assembly. The final assembly fasta file will be at linked_reads_out/pangaea_out/final.asm.fa
+src/hybrid/hybrid_wrapper.sh -r example/20_short_R1.fastq.gz -R example/20_short_R2.fastq.gz -i 60 -t metaspades -o linked_reads_out 
+```
 # Pangaea Hybrid
 ## Example of running Pangaea on short-reads with virtual barcodes  (long-reads and short-reads)
 ### Installation
 - Install athena
+As athena-meta requires python2, we need to create a separate environment for athena-meta.  
 ```
  mamba env create -f athena_environment.yaml 
 ```
-- Install pangea
-```
-# If you haven't install the pangaea environment yet
-mamba env create -f environment.yaml
-```
-
-- compile and install necessary packages
+- Install pangaea conda environment and all necessary packages
 ```
 bash build.sh
 ```
 
-- run the hybrid example, see more details on how to understand each steps 
+- run the hybrid assembly example.
 ```
 # bash src/hybrid/hybrid_wrapper.sh -l <longreads> -r <short_R1> -R <short_R2> [-i <identity>] [-t <type>] [-a <athena_lc>] [-A <athena_out>] [-o <output_dir>]
-nohup bash src/hybrid/hybrid_wrapper.sh -l example/hybrid_example/atcc_longreads_small.fastq.gz -r example/hybrid_example/atcc_short_R1.fastq.gz -R example/hybrid_example/atcc_short_R2.fastq.gz -i 60 -t operams -o hybrid_out > hybrid.log 2>&1 &
+nohup bash src/hybrid/hybrid_wrapper.sh -l example/hybrid_example/atcc_longreads_small.fastq.gz -r example/hybrid_example/atcc_short_R1.fastq.gz -R example/hybrid_example/atcc_short_R2.fastq.gz -i 60 -t metaspades -o hybrid_out -p pacbio > hybrid.log 2>&1 &
 ```
-
-If you encountered the Glibc problem
-```
-ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.26' not found
-```
-You can install a compatible GCC version directly within Conda:
-
-1. Install GCC in Your Conda Environment:
-   ```bash
-   conda install -c conda-forge gcc_linux-64 gxx_linux-64 cmake
-   ```
-
-2. Verify the Installation:
-   ```bash
-   strings $CONDA_PREFIX/lib/libstdc++.so.6 | grep GLIBCXX
-   ```
-   Ensure `GLIBCXX_3.4.26` is listed.
-
-3. Link the Updated Libraries:
-   Export the `LD_LIBRARY_PATH` to point to the Conda environment's libraries:
-   ```bash
-   export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
-   ```
 
 The generated final assembly will be at ```hybrid_out/pangaea_out/final.asm.fa```.
 
 This may take about 1~2 hours. 
 
 
-###  Optional: Substitute the metaSPAdes in step 1 and Athena in step 2 with the corresponding hybrid assemblers (such as hybridSPAdes or OPERA-MS)
+###  Optional: Substitute the metaSPAdes in step 1 and Athena in step 2 with the corresponding hybrid assemblers (such as hybridspades or metaplatanus)
 ```
-# type: operams, hybridspades
-./final_merge.sh <type>
+# type: metaspades, hybridspades, metaplatanus
+# bash src/hybrid/final_merge.sh <output_dir> <type>
+bash src/hybrid/final_merge.sh hybrid_out hybridspades
 ```
-The new generated final assembly will be at ```pangaea_out/4.assembly/quickmerge_<type>/merged_out.fasta```.
+The new generated final assembly will be at ```hybrid_out/pangaea_out/4.assembly/quickmerge_hybridspades/merged_out.fasta```.
 
 This may take about 10~30 minutes.
