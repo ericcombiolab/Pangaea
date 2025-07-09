@@ -100,7 +100,7 @@ cd example/linked_reads_example
 run_pangaea -s 10x -r 20_short_R1.fastq.gz -R 20_short_R2.fastq.gz -o pangaea
 ```
 
-# Example of running hybrid assembly
+## Example of running hybrid assembly
 
 ```
 cd example/hybrid_example
