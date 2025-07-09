@@ -1,10 +1,28 @@
 # Pangaea
 Pangaea is designed to assemble short-reads with high specificity physical (linked-reads) or virtual barcodes (long-reads+short-reads). It includes (1) short-reads binning using variational autoencoder (2)multi-thresholding reassembly and (3) ensemble assembly.
+- [Pangaea](#pangaea)
+  * [TODO](#todo)
+  * [Docker](#docker)
+  * [Installation](#installation)
+    + [Dependencies](#dependencies)
+    + [Build conda environment](#build-conda-environment)
+    + [Compile cpp utils of Pangaea](#compile-cpp-utils-of-pangaea)
+  * [Preprocessing of linked-reads](#preprocessing-of-linked-reads)
+  * [Running Pangaea](#running-pangaea)
+  * [Example of running Pangaea on short-reads with physical barcodes - linked-reads](#example-of-running-pangaea-on-short-reads-with-physical-barcodes---linked-reads)
+- [End-to-end Wrapper for Pangaea](#end-to-end-wrapper-for-pangaea)
+  * [The example data](#the-example-data)
+  * [Installation of athena-meta and Pangaea](#installation-of-athena-meta-and-pangaea)
+  * [A pipeline wrapper for linked-reads assembly](#a-pipeline-wrapper-for-linked-reads-assembly)
+  * [A pipeline wrapper for long-reads and short-reads](#a-pipeline-wrapper-for-long-reads-and-short-reads)
+    + [Optional: Substitute the final ensemble assembly with other hybrid assemblers - hybridspades or metaplatanus](#optional--substitute-the-final-ensemble-assembly-with-other-hybrid-assemblers---hybridspades-or-metaplatanus)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 ## TODO
 - [ ] Add more examples and wiki.
 - [ ] Conda package through Bioconda channel.
-
+      
 ## Docker
 We have built a docker image for users to directly run Pangaea (without automaticly select cluster numbers).
 ```
@@ -28,7 +46,7 @@ git clone https://github.com/ericcombiolab/Pangaea.git
 cd Pangaea
 ./build.sh
 # set up metaphlan4
-./build_db.sh (this will download the database in current directory named ./metaphlan4_DB)
+./build_db.sh (this will download the database in the current directory named ./metaphlan4_DB)
 # or 
 ./build_db.sh -d [your prefered directory(please make sure the space is larger than 25G)]
 ```
@@ -49,7 +67,8 @@ Software:
 - python 3.8
 
 
-### Build conda environment（not needed if you have run ```./build.sh``` ）
+### Build conda environment
+***not necessary if you have run ```./build.sh```***
 ```
 conda env create -f environment.yaml
 conda activate pangaea
@@ -58,11 +77,15 @@ conda activate pangaea
 conda env creat -f athena_enviroment.ymal
 conda activate athena
 ```
-Note that if you want to run Athena/Pangaea, you need to change conda enviroments accrodingly. 
+Note that if you want to run Athena/Pangaea, you need to change conda environments accordingly. 
 
-### Compile cpp utils of Pangaea（not needed if you have run ```./build.sh``` ）
+### Compile cpp utils of Pangaea
+***not necessary if you have run ```./build.sh```***
 ```
-cd Pangaea/cpptools && make && cd -
+mkdir build && cd build
+cmake ..
+make
+cd -
 ```
 
 ## Preprocessing of linked-reads
@@ -149,7 +172,7 @@ optional arguments:
                         assembly)
 ```
 
-## Example of running Pangaea on short-reads with physical barcodes (linked reads)
+## Example of running Pangaea on short-reads with physical barcodes - linked-reads
 ```
 conda activate pangaea
 cd example
@@ -159,15 +182,18 @@ The generated final assembly will be at ```pangaea/final.asm.fa```.
 
 This may take about 1~2 hours. 
 
-- A pipeline wrapper for linked reads assembly：
+# End-to-end Wrapper for Pangaea
+## The example data
+As the example data exceeds the minimum size for GitHub, we upload it using Git LFS. In order to download the data, follow the steps to install git lfs and pull the dataset.
+- Install git lfs
+https://github.com/git-lfs/git-lfs/wiki/Installation
+- Clone and pull the data
+Once git lfs is installed, to clone an LFS repo, just run a normal git clone command
 ```
-# This wrapper automatically run athena-meta, metaspades and pangaea assembly. The final assembly fasta file will be at linked_reads_out/pangaea_out/final.asm.fa
-src/hybrid/hybrid_wrapper.sh -r example/20_short_R1.fastq.gz -R example/20_short_R2.fastq.gz -i 60 -t metaspades -o linked_reads_out 
+git clone https://github.com/ericcombiolab/Pangaea.git
 ```
-# Pangaea Hybrid
-## Example of running Pangaea on short-reads with virtual barcodes  (long-reads and short-reads)
-### Installation
-- Install athena
+## Installation of athena-meta and Pangaea 
+- Install athena-meta
 As athena-meta requires python2, we need to create a separate environment for athena-meta.  
 ```
  mamba env create -f athena_environment.yaml 
@@ -176,19 +202,41 @@ As athena-meta requires python2, we need to create a separate environment for at
 ```
 bash build.sh
 ```
+## Usage
+```
+ Usage: src/hybrid/hybrid_wrapper.sh [-l <longreads>] [-r <short_R1>] [-R <short_R2>] [-i <identity>] [-t <type>] [-a <athena_lc>] [-A <athena_out>] [-o <output_dir>] [-p <longreads_type>]
+Options:
+  -l <longreads>       : Optional. Long reads file, if not given, we assume the short reads are linked reads with barcodes
+  -r <short_R1>       : Mandatory. Short reads R1
+  -R <short_R2>       : Mandatory. Short reads R2
+  -i <identity>       : Optional. Identity for barcode assignment, default is 60
+  -t <type>           : Optional. Hybrid assembly type, e.g., metaspades, hybridspades, metaplatanus, default is hybridspades
+  -a <athena_lc>       : Optional. Local assembly result of athena-meta, default is /athena_out/results/olc/flye-input-contigs.fa
+  -A <athena_out>       : Optional. Result file of athena-meta, default is /athena_out/results/olc/athena.asm.fa
+  -o <output_dir>     : Optional. Output directory, default is current directory with 'default_hybrid_out'
+  -p <longreads_type> : Optional. Long reads type, e.g., pacbio or nanopore, default is pacbio
+```
+## A pipeline wrapper for linked-reads assembly
+This wrapper automatically runs athena-meta, metaspades, and pangaea assembly. 
+```
+nohup bash src/hybrid/hybrid_wrapper.sh -r example/20_short_R1.fastq.gz -R example/20_short_R2.fastq.gz -i 60 -t metaspades -o linked_reads_out > lined_reads.log 2>&1 &
+```
+The generated final assembly will be at ```linked_reads_out/pangaea_out/final.asm.fa```.
 
-- run the hybrid assembly example.
+This may take about 1~2 hours. 
+
+## A pipeline wrapper for long-reads and short-reads
+This wrapper automatically runs athena-meta, metaspades, and pangaea-hybridspades hybrid assembly. 
 ```
 # bash src/hybrid/hybrid_wrapper.sh -l <longreads> -r <short_R1> -R <short_R2> [-i <identity>] [-t <type>] [-a <athena_lc>] [-A <athena_out>] [-o <output_dir>]
-nohup bash src/hybrid/hybrid_wrapper.sh -l example/hybrid_example/atcc_longreads_small.fastq.gz -r example/hybrid_example/atcc_short_R1.fastq.gz -R example/hybrid_example/atcc_short_R2.fastq.gz -i 60 -t metaspades -o hybrid_out -p pacbio > hybrid.log 2>&1 &
+nohup bash src/hybrid/hybrid_wrapper.sh -l example/hybrid_example/atcc_longreads_small.fastq.gz -r example/hybrid_example/atcc_short_R1.fastq.gz -R example/hybrid_example/atcc_short_R2.fastq.gz -i 60 -t hybridspades -o hybrid_out -p pacbio > hybrid.log 2>&1 &
 ```
-
 The generated final assembly will be at ```hybrid_out/pangaea_out/final.asm.fa```.
 
 This may take about 1~2 hours. 
 
 
-###  Optional: Substitute the metaSPAdes in step 1 and Athena in step 2 with the corresponding hybrid assemblers (such as hybridspades or metaplatanus)
+###  Optional: Substitute the final ensemble assembly with other hybrid assemblers - hybridspades or metaplatanus
 ```
 # type: metaspades, hybridspades, metaplatanus
 # bash src/hybrid/final_merge.sh <output_dir> <type>
