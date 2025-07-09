@@ -96,7 +96,7 @@ The assembled contigs will be in output_dir/final_asm.fa.
 ## Example of running linked-read assembly
 ```
 cd example/linked_reads_example
-run_pangaea -s stlfr -r reads1.fq.gz -R reads2.fq.gz -o pangaea
+run_pangaea -s stlfr -r 20_short_R1.fastq.gz -R 20_short_R2.fastq.gz -o pangaea
 ```
 
 # Example of running hybrid assembly
