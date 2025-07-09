@@ -330,8 +330,8 @@ if [ -n "$longreads" ] && [ -f "$longreads" ]; then
         $template_contig=`realpath "$metaplatanus_out_dir/out_final.fa"`
     fi
     pangaea_output=`realpath "$output_dir/4_pangaea_out"`
-    $athena_lc=`realpath "$athena_out_dir/results/olc/flye-input-contigs.fa"`
-    $athena_out=`realpath "$athena_out_dir/results/olc/athena.asm.fa"`
+    athena_lc=`realpath "$athena_out_dir/results/olc/flye-input-contigs.fa"`
+    athena_out=`realpath "$athena_out_dir/results/olc/athena.asm.fa"`
     if [ $cluster == "metaphlan" ]; then
         python $root/pangaea.py -i $input_reads -sp $template_contig -lc $athena_lc -at $athena_out -o $pangaea_output
     else
@@ -340,8 +340,8 @@ if [ -n "$longreads" ] && [ -f "$longreads" ]; then
     cp "$pangaea_output/final.asm.fa" "$output_dir/final_asm.fa"
 else
     pangaea_output=`realpath "$output_dir/3_pangaea_out"`
-    $athena_lc=`realpath "$athena_out_dir/results/olc/flye-input-contigs.fa"`
-    $athena_out=`realpath "$athena_out_dir/results/olc/athena.asm.fa"`
+    athena_lc=`realpath "$athena_out_dir/results/olc/flye-input-contigs.fa"`
+    athena_out=`realpath "$athena_out_dir/results/olc/athena.asm.fa"`
     if [ $cluster == "metaphlan" ]; then
         python $root/pangaea.py -i $input_reads -sp $metaspades_contig -lc $athena_lc -at $athena_out -o $pangaea_output
     else
