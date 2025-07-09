@@ -95,3 +95,13 @@ target_include_directories(add_barcode PRIVATE ${COMMON_INCLUDES})
 target_link_libraries(add_barcode PRIVATE ${COMMON_LIBS} ${HTS_LIB})
 target_compile_options(add_barcode PRIVATE -fopenmp)
 target_link_options(add_barcode PRIVATE -fopenmp)
+
+# preprocess_stlfr
+add_executable(preprocess_stlfr preprocess_stlfr.cpp)
+target_include_directories(preprocess_stlfr PRIVATE ${COMMON_INCLUDES})
+target_link_libraries(preprocess_stlfr PRIVATE ${COMMON_LIBS})
+
+# preprocess_tellseq
+add_executable(preprocess_tellseq preprocess_tellseq.cpp)
+target_include_directories(preprocess_tellseq PRIVATE ${COMMON_INCLUDES})
+target_link_libraries(preprocess_tellseq PRIVATE ${COMMON_LIBS})

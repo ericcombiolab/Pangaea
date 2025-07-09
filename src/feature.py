@@ -72,12 +72,18 @@ class Feature:
         if not os.path.isfile(out_count):
             logging.info("caculate abundance : "+out_count )
             if self.args.reads1 and self.args.reads2:
-                command = ["pigz", "-dc", self.args.reads1, self.args.reads2, "|", "jellyfish", "count", "-t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count, "--min-qual-char=?", "/dev/fd/0"]
-                logging.info("command started: " + " ".join(command))
-                pipe = subprocess.Popen(["pigz", "-dc", self.args.reads1, self.args.reads2], stdout=subprocess.PIPE)
-                subprocess.check_output(["jellyfish", "count", "-t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count, "--min-qual-char=?", "/dev/fd/0", ], stdin=pipe.stdout)
-                pipe.communicate()
-                logging.info("command completed: " + " ".join(command))
+                if self.args.reads1.endswith('.gz') or self.args.reads2.endswith('.gz'):
+                    command = ["pigz", "-dc", self.args.reads1, self.args.reads2, "|", "jellyfish", "count", "-t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count, "--min-qual-char=?", "/dev/fd/0"]
+                    logging.info("command started: " + " ".join(command))
+                    pipe = subprocess.Popen(["pigz", "-dc", self.args.reads1, self.args.reads2], stdout=subprocess.PIPE)
+                    subprocess.check_output(["jellyfish", "count", "-t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count, "--min-qual-char=?", "/dev/fd/0", ], stdin=pipe.stdout)
+                    pipe.communicate()
+                    logging.info("command completed: " + " ".join(command))
+                else:
+                    command = ["jellyfish", "count", "-t", str(self.threads), "-C", "-m", str(self.kmer), "-s", "5G", "-o", out_count, "--min-qual-char=?", self.args.reads1, self.args.reads2]
+                    logging.info("command started: " + " ".join(command))
+                    run_cmd(command)
+                    logging.info("command completed: " + " ".join(command))
                 run_cmd(["jellyfish", "dump", "-c", "-t", out_count, "-o", out_dump])
             elif self.args.interleaved_reads:
                 if self.args.interleaved_reads.endswith(".gz"):

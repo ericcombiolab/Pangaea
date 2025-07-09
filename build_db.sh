@@ -18,7 +18,6 @@ done
 if [ -z $metapglan4_DB ];then
     metapglan4_DB=$PWD/metaphlan4_DB
 fi
-fi
 
 # install metaphlan4 Database
 if [ ! -d "$metapglan4_DB" ];then

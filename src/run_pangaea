@@ -1,0 +1,354 @@
+#!/bin/bash
+set -o pipefail
+set -e
+
+# >>> conda initialize >>>
+if command -v conda >/dev/null 2>&1; then
+    __conda_setup="$(conda 'shell.bash' 'hook' 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
+    else
+        if [ -f "$(dirname \"$(command -v conda)\")/../etc/profile.d/conda.sh" ]; then
+            . "$(dirname \"$(command -v conda)\")/../etc/profile.d/conda.sh"
+        fi
+    fi
+    unset __conda_setup
+else
+    echo "[PANGAEA][ERROR] Conda not found in PATH. Please install or load Conda." >&2
+    exit 1
+fi
+# <<< conda initialize <<<
+
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] [PANGAEA] $*"
+}
+log_error() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] [PANGAEA][ERROR] $*" >&2
+}
+
+log "Starting pangaea: $0 $*"
+
+conda activate pangaea
+
+# Argument parsing with both short and long options
+print_usage() {
+    echo "Usage: $0 [OPTIONS]"
+    echo "Required arguments:"
+    echo "  -s, --short_type <string>       Short reads type: short, stlfr, tellseq, 10x"
+    echo "                                    If 'short', hybrid assembly is performed and -l, -H, and -p are required."
+    echo "                                    If 'stlfr', 'tellseq', or '10x', linked assembly is performed and -l, -H, and -p must NOT be set."
+    echo "                                    For 'stlfr' or 'tellseq', original reads can be directly provided to Pangaea without preprocessing."
+    echo "                                    For '10x', please ensure barcodes are in the BX:Z tag of the read headers (this can be done using 'longranger basic', followed by deinterleaving the reads)."
+    echo "  -r, --short_R1 <file>           Short reads R1 file"
+    echo "  -R, --short_R2 <file>           Short reads R2 file"
+    echo "  -I, --index <file>              Barcode index for Tell-Seq (required if -s is 'tellseq'; this file is provided with the reads)"
+    echo "  -o, --output_dir <dir>           Output directory (required)"
+    echo "Hybrid assembly (required if -s is 'short'):"
+    echo "  -l, --longreads <file>          Long reads file"
+    echo "  -H, --hybrid_asm <string>       Hybrid assembler: hybridspades, metaplatanus (default: hybridspades)"
+    echo "  -p, --longreads_type <string>   Long reads type: pacbio or nanopore"
+    echo "Optional arguments:"
+    echo "  -c, --cluster <int>             Number of clusters for read binning (default: 30; input metaphlan to detect species number by metaphlan)"
+    echo "  -t, --threads <int>             Number of threads to use (default: 50; applied to all tools that support it)"
+    echo "  -h, --help                      Show this help message and exit"
+}
+
+TEMP=$(getopt -o l:r:R:s:t:p:I:o:H:h:c: --long longreads:,short_R1:,short_R2:,short_type:,threads:,longreads_type:,index:,output_dir:,hybrid_asm:,help:,cluster: -n 'run_pangaea.sh' -- "$@")
+if [ $? != 0 ]; then print_usage; exit 1; fi
+
+# Parse arguments
+eval set -- "$TEMP"
+
+while true; do
+    case "$1" in
+        -l|--longreads) longreads="$2"; shift 2;;
+        -c|--cluster) cluster="$2"; shift 2;;
+        -r|--short_R1) short_R1="$2"; shift 2;;
+        -R|--short_R2) short_R2="$2"; shift 2;;
+        -s|--short_type) short_type="$2"; shift 2;;
+        -H|--hybrid_asm) hybrid_asm="$2"; shift 2;;
+        -p|--longreads_type) longreads_type="$2"; shift 2;;
+        -t|--threads) threads="$2"; shift 2;;
+        -I|--index) index="$2"; shift 2;;
+        -o|--output_dir) output_dir="$2"; shift 2;;
+        -h|--help) print_usage; exit 0;;
+        --) shift; break;;
+        *) echo "Internal error! Option: $1"; print_usage; exit 1;;
+    esac
+done
+
+# Set defaults
+threads=${threads:-50}
+cluster=${cluster:-30}
+if [ "$short_type" = "short" ]; then
+    hybrid_asm=${hybrid_asm:-hybridspades}
+fi
+
+# Validate cluster argument
+if ! [[ "$cluster" =~ ^[0-9]+$ || "$cluster" == "metaphlan" ]]; then
+    log_error "-c/--cluster must be an integer or 'metaphlan'. Got: $cluster"
+    print_usage
+    exit 1
+fi
+
+# Clean argument checks
+if [ -z "$short_type" ] || [ -z "$short_R1" ] || [ -z "$short_R2" ] || [ -z "$output_dir" ]; then
+    log_error "-s/--short_type, -r/--short_R1, -R/--short_R2, and -o/--output_dir are required."
+    print_usage
+    exit 1
+fi
+
+# Tell-Seq index check
+if [ "$short_type" = "tellseq" ] && [ -z "$index" ]; then
+    log_error "For Tell-Seq (-s tellseq), -I/--index is required."
+    print_usage
+    exit 1
+fi
+
+if [ "$short_type" = "short" ]; then
+    if [ -z "$longreads" ] || [ -z "$hybrid_asm" ] || [ -z "$longreads_type" ]; then
+        log_error "For hybrid assembly (-s short), -l/--longreads, -H/--hybrid_asm, and -p/--longreads_type are required."
+        print_usage
+        exit 1
+    fi
+elif [[ "$short_type" == "stlfr" || "$short_type" == "tellseq" || "$short_type" == "10x" ]]; then
+    if [ -n "$longreads" ] || [ -n "$hybrid_asm" ] || [ -n "$longreads_type" ]; then
+        log_error "For linked assembly (-s $short_type), do NOT provide -l/--longreads, -H/--hybrid_asm, or -p/--longreads_type."
+        print_usage
+        exit 1
+    fi
+else
+    log_error "Invalid value for -s/--short_type: $short_type. Must be one of: short, stlfr, tellseq, 10x."
+    print_usage
+    exit 1
+fi
+
+
+root=$(dirname $(realpath $0))
+BINDIR=$root/bin
+
+# ----------------------------------------------------------------------------
+# Step 0: reads preprocessing
+reads_dir="$output_dir/0_preprocess_reads"
+mkdir -p "$reads_dir"
+
+# Preprocess stlfr and tellseq reads if needed
+if [ "$short_type" = "stlfr" ]; then
+    stlfr_out1="$reads_dir/stlfr_1.fq"
+    stlfr_out2="$reads_dir/stlfr_2.fq"
+    if [ ! -f "$stlfr_out1" ] || [ ! -f "$stlfr_out2" ]; then
+        log "[stlfr] Preprocessing stlfr reads..."
+        "$BINDIR/preprocess_stlfr" --reads1 "$short_R1" --reads2 "$short_R2" --output "$reads_dir/stlfr" -n -l
+    else
+        log "[stlfr] Preprocessed stlfr reads found, skipping."
+    fi
+    short_R1="$stlfr_out1"
+    short_R2="$stlfr_out2"
+fi
+
+if [ "$short_type" = "tellseq" ]; then
+    tellseq_out1="$reads_dir/tellseq_1.fq"
+    tellseq_out2="$reads_dir/tellseq_2.fq"
+    if [ ! -f "$tellseq_out1" ] || [ ! -f "$tellseq_out2" ]; then
+        log "[tellseq] Preprocessing tellseq reads..."
+        "$BINDIR/preprocess_tellseq" --reads1 "$short_R1" --reads2 "$short_R2" -l "$index" --output "$reads_dir/tellseq"
+    else
+        log "[tellseq] Preprocessed tellseq reads found, skipping."
+    fi
+    short_R1="$tellseq_out1"
+    short_R2="$tellseq_out2"
+fi
+
+# Prepare interleaved reads
+input_reads=`realpath "$reads_dir/interleaved_link_reads.sorted.fastq"`
+if [ ! -f "$reads_dir/interleaved_link_reads.sorted.fastq" ]; then
+    if [ -n "$longreads" ] && [ -f "$longreads" ]; then
+        # Hybrid mode: assign barcodes
+        if [ -f "${reads_dir}/barcode_maps.txt" ];then
+            log "[hybrid] ${reads_dir}/barcode_maps.txt done"
+        else
+            output_map="${reads_dir}/barcode_maps.txt"
+            if [[ "$longreads" == *.gz ]]; then
+                decompress_cmd="pigz -dc"
+            else
+                decompress_cmd="cat"
+            fi
+            ext="${longreads##*/}"
+            ext="${ext%.gz}"
+            ext="${ext##*.}"
+            if [[ "$ext" == "fq" || "$ext" == "fastq" ]]; then
+                $decompress_cmd "$longreads" | \
+                awk 'NR % 4 == 1 {
+                    name = $1
+                    sub(/^@/, "", name)
+                    print name, "BX:Z:" name
+                }' > "$output_map"
+
+            elif [[ "$ext" == "fa" || "$ext" == "fasta" ]]; then
+                $decompress_cmd "$longreads" | \
+                awk '/^>/ {
+                    name = $1
+                    sub(/^>/, "", name)
+                    print name, "BX:Z:" name
+                }' > "$output_map"
+
+            else
+                log_error "Unsupported input file extension: $ext"
+                exit 1
+            fi
+        fi
+
+        if [ ! -f "$longreads.bwt" ]; then
+            log "[hybrid] bwa index"
+            bwa index "$longreads" > /dev/null 2>&1
+        fi
+        if [ ! -f "$reads_dir/short2long.bam" ]; then
+            log "[hybrid] bwa mem"
+            bwa mem -t $threads "$longreads" "$short_R1" "$short_R2" | samtools sort -@ $threads -n -o "$reads_dir/short2long.bam" - > /dev/null 2>&1
+        fi
+        if [ ! -f "$reads_dir/short_reads_barcoded_map.txt" ]; then
+            log "[hybrid] add virtual barcode"
+            "$BINDIR/add_barcode" -b "$reads_dir/short2long.bam" -m "$reads_dir/barcode_maps.txt" -o "$reads_dir/short_reads_barcoded"
+        fi
+        if [ ! -f "$reads_dir/interleaved_link_reads.fastq" ]; then
+            log "[hybrid] assign barcodes"
+            "$BINDIR/assign_barcodes" --map "$reads_dir/short_reads_barcoded_map.txt" --fastq1 "$short_R1" --fastq2 "$short_R2" --output "$reads_dir/interleaved_link_reads.fastq"
+        fi
+    else
+        # Linked mode: interleave short reads
+        if [ ! -f "$reads_dir/interleaved_link_reads.fastq" ]; then
+            log "[linked] Interleaving short reads"
+            interleaved_reads="$reads_dir/interleaved_link_reads.fastq"
+            seqtk mergepe "$short_R1" "$short_R2" > "$interleaved_reads"
+
+            log "[linked] Interleaved reads saved to: $interleaved_reads"
+        else
+            log "[linked] interleaved_link_reads.fastq already exists, skipping interleaving"
+        fi
+    fi
+
+    # Sort interleaved reads by barcode (BX:Z: tag, any characters, unbarcoded to end)
+    log "Sorting linked reads by barcode"
+    input_fastq="$reads_dir/interleaved_link_reads.fastq"
+    output_sorted="$reads_dir/interleaved_link_reads.sorted.fastq"
+
+    awk '
+    BEGIN { FS="\n"; ORS=""; }
+    /^@/ {
+        block = $0
+        for (i = 1; i < 8; i++) {
+            getline line
+            block = block "\t" line
+        }
+        if (match($1, /BX:Z:[^[:space:]]+/, m)) {
+            tag = m[0]
+        } else {
+            tag = "~~~"
+        }
+        print tag "\t" block "\n"
+    }
+    ' "$input_fastq" | LANG=C sort -k1,1 | cut -f2- | tr "\t" "\n" > "$output_sorted"
+    rm "$input_fastq"
+else
+    log "Interleaved reads preparation done"
+fi
+
+# ----------------------------------------------------------------------------
+# Step 1: run metaspades and athena, depends on metaspades
+metaspades_out_dir="$output_dir/1_metaspades_out"
+mkdir -p $metaspades_out_dir
+
+if [ -f "$metaspades_out_dir/contigs.fasta" ];then
+    log "metaspades assembly done"
+else
+    log "Running metaspades assembly"
+    metaspades.py -1 $short_R1 -2 $short_R2 -t $threads -o $metaspades_out_dir > $metaspades_out_dir/run_metaspades.log 2>&1 
+fi
+
+# ----------------------------------------------------------------------------
+# Step 2: run metaspades and athena, depends on metaspades
+metaspades_contig=`realpath "$metaspades_out_dir/contigs.fasta"`
+athena_out_dir="$output_dir/2_athena_out"
+mkdir -p $athena_out_dir
+
+if [ -f "$athena_out_dir/results/olc/athena.asm.fa" ]; then
+    log "athena done"
+else
+    log "Running athena-meta assembly"
+    echo '{' > $athena_out_dir/config.json
+    echo '    "ctgfasta_path": "'$metaspades_contig'",' >> $athena_out_dir/config.json
+    echo '    "reads_ctg_bam_path": "align-reads.contigs.bam",' >> $athena_out_dir/config.json
+    echo '    "input_fqs": "'$input_reads'",' >> $athena_out_dir/config.json
+    echo '    "cluster_settings": {' >> $athena_out_dir/config.json
+    echo '        "cluster_type": "multiprocessing",' >> $athena_out_dir/config.json
+    echo '        "processes": '$threads >> $athena_out_dir/config.json
+    echo '    }' >> $athena_out_dir/config.json
+    echo '}' >> $athena_out_dir/config.json
+
+    if [ ! -f $metaspades_contig.bwt ]; then
+        log "Indexing contigs for athena-meta (bwa index)"
+        bwa index $metaspades_contig
+    fi
+    if [ ! -f $athena_out_dir/align-reads.contigs.bam ]; then
+        log "Aligning reads to contigs for athena-meta (bwa mem + samtools sort/index)"
+        bwa mem -t $threads -C $metaspades_contig $input_reads | samtools sort -@ $threads -o $athena_out_dir/align-reads.contigs.bam
+        samtools index -@ $threads $athena_out_dir/align-reads.contigs.bam
+    fi
+
+    conda deactivate; conda activate athena-meta
+    cd $athena_out_dir
+    athena-meta --config config.json > athena_meta.log 2>&1
+    cd ../../
+    conda deactivate; conda activate pangaea
+    log "athena-meta assembly completed"
+fi
+
+# ----------------------------------------------------------------------------
+# Step 3: run pangaea
+log "Running Pangaea assembly"
+if [ -n "$longreads" ] && [ -f "$longreads" ]; then
+    $template_contig=$metaspades_contig
+    if [ $hybrid_asm == "hybridspades" ];then
+        $hybridspades_out_dir="$output_dir/3_hybridspades_out"
+        mkdir -p $hybridspades_out_dir
+        if [ -f "$hybridspades_out_dir/contigs.fasta" ];then
+            log "Generating hybrid assembly template done"
+        else
+            log "Generating hybrid assembly template by hybridspades"
+            if [ $longreads_type == "nanopore" ];then
+                metaspades.py -1 $short_R1 -2 $short_R2 --nanopore $longreads -t $threads -o $hybridspades_out_dir > $hybridspades_out_dir/run_hybridspades.log 2>&1
+            else
+                metaspades.py -1 $short_R1 -2 $short_R2 --pacbio $longreads -t $threads -o $hybridspades_out_dir > $hybridspades_out_dir/run_hybridspades.log 2>&1
+            fi
+        fi
+        $template_contig=`realpath "$hybridspades_out_dir/contigs.fasta"`
+    else
+        log "Generating hybrid assembly template by metaplatanus"
+        metaplatanus_out_dir="$output_dir/3_metaplatanus_out"
+        mkdir -p $metaplatanus_out_dir
+        metaplatanus -IP1 $short_R1 $short_R2 -p $longreads -t $threads -o $metaplatanus_out_dir/out -m 500 -t $threads > $metaplatanus_out_dir/run_metaplatanus.log 2>&1
+        $template_contig=`realpath "$metaplatanus_out_dir/out_final.fa"`
+    fi
+    pangaea_output=`realpath "$output_dir/4_pangaea_out"`
+    $athena_lc=`realpath "$athena_out_dir/results/olc/flye-input-contigs.fa"`
+    $athena_out=`realpath "$athena_out_dir/results/olc/athena.asm.fa"`
+    if [ $cluster == "metaphlan" ]; then
+        python $root/pangaea.py -i $input_reads -sp $template_contig -lc $athena_lc -at $athena_out -o $pangaea_output
+    else
+        python $root/pangaea.py -i $input_reads -sp $template_contig -lc $athena_lc -at $athena_out -o $pangaea_output -c $cluster
+    fi
+    cp "$pangaea_output/final.asm.fa" "$output_dir/final_asm.fa"
+else
+    pangaea_output=`realpath "$output_dir/3_pangaea_out"`
+    $athena_lc=`realpath "$athena_out_dir/results/olc/flye-input-contigs.fa"`
+    $athena_out=`realpath "$athena_out_dir/results/olc/athena.asm.fa"`
+    if [ $cluster == "metaphlan" ]; then
+        python $root/pangaea.py -i $input_reads -sp $metaspades_contig -lc $athena_lc -at $athena_out -o $pangaea_output
+    else
+        python $root/pangaea.py -i $input_reads -sp $metaspades_contig -lc $athena_lc -at $athena_out -o $pangaea_output -c $cluster
+    fi
+    cp "$pangaea_output/final.asm.fa" "$output_dir/final_asm.fa"
+fi
+
+
+log "Pangaea assembly completed"
