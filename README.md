@@ -23,7 +23,7 @@ cd Pangaea
       # this will create conda env pangaea
       mamba env create -f environment.yaml
       ```
-    - Install the `athena-meta` environment for Athena (required for hybrid assembly):
+    - Install the `athena-meta` environment for Athena:
       ```bash
       # this will create conda env athena-meta
       mamba create -n athena-meta bioconda::athena_meta
