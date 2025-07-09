@@ -87,6 +87,7 @@ Hybrid assembly (required if -s is 'short'):
   -H, --hybrid_asm <string>       Hybrid assembler: hybridspades, metaplatanus (default: hybridspades)
   -p, --longreads_type <string>   Long reads type: pacbio or nanopore
 Optional arguments:
+  -c, --cluster <int>             Number of clusters for read binning (default: 30; input metaphlan to detect species number by metaphlan)
   -t, --threads <int>             Number of threads to use (default: 50; applied to all tools that support it)
   -h, --help                      Show this help message and exit
 ```
