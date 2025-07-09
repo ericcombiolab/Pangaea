@@ -1,7 +1,6 @@
 # Pangaea
 Pangaea is designed to assemble short-reads with high specificity physical (linked-reads) or virtual barcodes (long-reads+short-reads). It includes (1) short-reads binning using variational autoencoder (2)multi-thresholding reassembly and (3) ensemble assembly.
 - [Pangaea](#pangaea)
-  * [TODO](#todo)
   * [Docker](#docker)
   * [Installation](#installation)
     + [Dependencies](#dependencies)
@@ -229,7 +228,7 @@ This may take about 1~2 hours.
 This wrapper automatically runs athena-meta, metaspades, and pangaea-hybridspades hybrid assembly. 
 ```
 # bash src/hybrid/hybrid_wrapper.sh -l <longreads> -r <short_R1> -R <short_R2> [-i <identity>] [-t <type>] [-a <athena_lc>] [-A <athena_out>] [-o <output_dir>]
-nohup bash src/hybrid/hybrid_wrapper.sh -l example/hybrid_example/atcc_longreads_small.fastq.gz -r example/hybrid_example/atcc_short_R1.fastq.gz -R example/hybrid_example/atcc_short_R2.fastq.gz -i 60 -t hybridspades -o hybrid_out -p pacbio > hybrid.log 2>&1 &
+nohup bash src/hybrid/hybrid_wrapper.sh -l example/hybrid_example/atcc_longreads_small.fastq.gz -r example/20_short_R1.fastq.gz -R example/20_short_R2.fastq.gz -i 60 -t hybridspades -o hybrid_out -p pacbio > hybrid.log 2>&1 &
 ```
 The generated final assembly will be at ```hybrid_out/pangaea_out/final.asm.fa```.
 
