@@ -26,8 +26,9 @@ else
 fi
 # <<< conda initialize <<<
 
-# After conda initialization, the default environment is usually 'base'. Please ensure 'mamba' is installed in 'base', or activate another environment where 'mamba' is available before running this script.
-# Example: conda activate <env_with_mamba>
+# After conda initialization, the default environment is usually 'base'. Please ensure 'mamba' is installed in 'base', or activate another environment where 'mamba' is available.
+# Example: uncomment the following line to activate an environment with 'mamba'.
+# conda activate <env_with_mamba>
 
 # Create pangaea environment if not present
 if ! conda env list | grep -q '^pangaea[[:space:]]'; then
