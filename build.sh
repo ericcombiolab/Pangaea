@@ -2,10 +2,10 @@
 set -e
 
 # install conda env pangaea
-mamba env create -f environment.yaml && conda activate pangaea
+mamba env create -f environment.yaml -y
 
 # install athena-meta
-mamba create -n athena-meta bioconda::athena_meta
+mamba create -n athena-meta bioconda::athena_meta -y
 
 conda activate pangaea
 

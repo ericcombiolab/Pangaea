@@ -73,6 +73,7 @@ cd Pangaea
 
 
 ## Running Pangaea
+The `run_pangaea` executable is located in the src directory.
 ```
 Usage: ./src/run_pangaea [OPTIONS]
 Required arguments:
