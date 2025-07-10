@@ -10,7 +10,6 @@ import sys
 import argparse
 import logging
 
-from torch.utils.data import DataLoader
 import numpy as np
 
 from clustering import cluster_barcode_reads, final_assemble
@@ -18,6 +17,7 @@ from data import Data
 from feature import Feature
 from models.VAENET import VAENET
 from utils import CustomWeightedRandomSampler, init_all, run_cmd
+from torch.utils.data import DataLoader
 
 # check if step are finished
 def check_steps_finish(args, step):

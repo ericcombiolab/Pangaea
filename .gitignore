@@ -16,3 +16,7 @@
 **/*.a
 **/*.o
 **/bin/
+
+# rph_kmeans
+/third_parties/rph_kmeans/build/
+/third_parties/rph_kmeans/dist/
