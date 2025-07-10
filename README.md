@@ -28,6 +28,10 @@ cd Pangaea
       # this will create conda env athena-meta
       mamba create -n athena-meta bioconda::athena_meta
       ```
+    - Activate the `pangaea` environment:
+      ```bash
+      conda activate pangaea
+      ```
 
 2. **Install PyTorch**
     - Please follow [PyTorch's official instructions](https://pytorch.org/get-started/locally/) for your system and hardware. For CPU-only installation, you can use:
@@ -38,7 +42,6 @@ cd Pangaea
 3. **Install rph_kmeans**
     - Install the `rph_kmeans` package from source:
       ```bash
-      conda activate pangaea
       cd third_parties/rph_kmeans
       python setup.py install
       cd ../../
