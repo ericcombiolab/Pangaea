@@ -103,9 +103,9 @@ if(is.null(opt$outfile_prefix)){
 }
 
 current_dir <- getwd()
-dir.create(file.path(current_dir, opt$out_directory), showWarnings = FALSE)
+dir.create(file.path(opt$out_directory), showWarnings = FALSE)
 
-outfile <- paste(current_dir, opt$out_directory, outfile_prefix, sep="/")
+outfile <- paste(opt$out_directory, outfile_prefix, sep="/")
 
 ### table preprocessing ###
 

@@ -69,7 +69,7 @@ def save_clustering_result(args, outdir, reads, clusters, barcodes, script_path)
 
 def cluster_barcode_reads(args, model_path, cluster_path, script_path, range_step=(4, 100, 3), patience=7, delta=0.0001):    
     extract_reads = os.path.join(script_path, "bin", "extract_reads")
-    calculate_diversity = os.path.join(script_path, "bin", "calculate_diversity.sh")
+    calculate_diversity = os.path.join(script_path, "scripts", "calculate_diversity.sh")
     output_npz = os.path.join(cluster_path, "clusters.npz")
     output_tsv = os.path.join(cluster_path, "clusters.tsv")
     embedding_path = os.path.join(model_path, "latent.npz")
@@ -91,16 +91,16 @@ def cluster_barcode_reads(args, model_path, cluster_path, script_path, range_ste
                 num_classes = args.clusters
             else:
                 if args.reads1 and args.reads2:
-                    run_cmd([calculate_diversity, args.reads1])
+                    run_cmd([calculate_diversity, args.reads1, args.metaphlan_db, cluster_path])
                 elif args.interleaved_reads:
-                    run_cmd([calculate_diversity, args.interleaved_reads])
+                    run_cmd([calculate_diversity, args.interleaved_reads, args.metaphlan_db, cluster_path])
                 else:
                     logging.error("no reads provided")
                     raise FileNotFoundError("no reads provided")
-                shannon_diversity = np.loadtxt("metaphlan_tmp/diversity_analysis/profiles_table_shannon.txt")
+                shannon_diversity = np.loadtxt(os.path.join(cluster_path, "metaphlan_tmp/diversity_analysis/profiles_table_shannon.txt"))
                 num_classes = int(8 * shannon_diversity)
                 logging.info(f"estimated num_classes: {num_classes}")
-                run_cmd(["rm", "-rf", "metaphlan_tmp"])
+                run_cmd(["rm", "-rf", os.path.join(cluster_path,"metaphlan_tmp")])
             clusters = clustering_rph_kmeans(embedding, num_classes)
             np.savez(output_npz, clusters)
             for i in range(len(barcodes)):

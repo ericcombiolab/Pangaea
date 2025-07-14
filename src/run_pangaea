@@ -2,6 +2,8 @@
 set -o pipefail
 set -e
 
+export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+
 # >>> conda initialize >>>
 if command -v conda >/dev/null 2>&1; then
     __conda_setup="$(conda 'shell.bash' 'hook' 2> /dev/null)"
@@ -44,6 +46,7 @@ print_usage() {
     echo "  -I, --index <file>              Barcode index for Tell-Seq (required if -s is 'tellseq'; this file is provided with the reads)"
     echo "  -o, --output_dir <dir>           Output directory (required)"
     echo "Hybrid assembly (required if -s is 'short'):"
+    echo "  -m, --metaphlan_db <file>       Metaphlan database for species detection (required if -c is 'metaphlan')"
     echo "  -l, --longreads <file>          Long reads file"
     echo "  -H, --hybrid_asm <string>       Hybrid assembler: hybridspades, metaplatanus (default: hybridspades)"
     echo "  -p, --longreads_type <string>   Long reads type: pacbio or nanopore"
@@ -53,7 +56,7 @@ print_usage() {
     echo "  -h, --help                      Show this help message and exit"
 }
 
-TEMP=$(getopt -o l:r:R:s:t:p:I:o:H:h:c: --long longreads:,short_R1:,short_R2:,short_type:,threads:,longreads_type:,index:,output_dir:,hybrid_asm:,help:,cluster: -n 'run_pangaea.sh' -- "$@")
+TEMP=$(getopt -o l:r:R:s:t:p:I:o:m:H:h:c: --long longreads:,short_R1:,short_R2:,short_type:,threads:,longreads_type:,index:,output_dir:,hybrid_asm:,help:,cluster: -n 'run_pangaea.sh' -- "$@")
 if [ $? != 0 ]; then print_usage; exit 1; fi
 
 # Parse arguments
@@ -71,6 +74,7 @@ while true; do
         -t|--threads) threads="$2"; shift 2;;
         -I|--index) index="$2"; shift 2;;
         -o|--output_dir) output_dir="$2"; shift 2;;
+        -m|--metaphlan_db) metaphlan_db="$2"; shift 2;;
         -h|--help) print_usage; exit 0;;
         --) shift; break;;
         *) echo "Internal error! Option: $1"; print_usage; exit 1;;
@@ -85,7 +89,7 @@ if [ "$short_type" = "short" ]; then
 fi
 
 # Validate cluster argument
-if ! [[ "$cluster" =~ ^[0-9]+$ || "$cluster" == "metaphlan" ]]; then
+if ! [[ "$cluster" =~ ^[0-9]+$ || ( "$cluster" == "metaphlan" && -z "$metaphalan_db") ]]; then
     log_error "-c/--cluster must be an integer or 'metaphlan'. Got: $cluster"
     print_usage
     exit 1
@@ -297,7 +301,7 @@ else
 
     conda deactivate; conda activate athena-meta
     cd $athena_out_dir
-    athena-meta --config config.json > athena_meta.log 2>&1
+    athena-meta --force_reads --config config.json > athena_meta.log 2>&1
     cd ../../
     conda deactivate; conda activate pangaea
     log "athena-meta assembly completed"
@@ -307,9 +311,9 @@ fi
 # Step 3: run pangaea
 log "Running Pangaea assembly"
 if [ -n "$longreads" ] && [ -f "$longreads" ]; then
-    $template_contig=$metaspades_contig
+    template_contig=$metaspades_contig
     if [ $hybrid_asm == "hybridspades" ];then
-        $hybridspades_out_dir="$output_dir/3_hybridspades_out"
+        hybridspades_out_dir="$output_dir/3_hybridspades_out"
         mkdir -p $hybridspades_out_dir
         if [ -f "$hybridspades_out_dir/contigs.fasta" ];then
             log "Generating hybrid assembly template done"
@@ -321,19 +325,19 @@ if [ -n "$longreads" ] && [ -f "$longreads" ]; then
                 metaspades.py -1 $short_R1 -2 $short_R2 --pacbio $longreads -t $threads -o $hybridspades_out_dir > $hybridspades_out_dir/run_hybridspades.log 2>&1
             fi
         fi
-        $template_contig=`realpath "$hybridspades_out_dir/contigs.fasta"`
+        template_contig=`realpath "$hybridspades_out_dir/contigs.fasta"`
     else
         log "Generating hybrid assembly template by metaplatanus"
         metaplatanus_out_dir="$output_dir/3_metaplatanus_out"
         mkdir -p $metaplatanus_out_dir
         metaplatanus -IP1 $short_R1 $short_R2 -p $longreads -t $threads -o $metaplatanus_out_dir/out -m 500 -t $threads > $metaplatanus_out_dir/run_metaplatanus.log 2>&1
-        $template_contig=`realpath "$metaplatanus_out_dir/out_final.fa"`
+        template_contig=`realpath "$metaplatanus_out_dir/out_final.fa"`
     fi
     pangaea_output=`realpath "$output_dir/4_pangaea_out"`
     athena_lc=`realpath "$athena_out_dir/results/olc/flye-input-contigs.fa"`
     athena_out=`realpath "$athena_out_dir/results/olc/athena.asm.fa"`
     if [ $cluster == "metaphlan" ]; then
-        python $root/pangaea.py -i $input_reads -sp $template_contig -lc $athena_lc -at $athena_out -o $pangaea_output
+        python $root/pangaea.py -i $input_reads -sp $template_contig -lc $athena_lc -at $athena_out -o $pangaea_output -m $metaphlan_db
     else
         python $root/pangaea.py -i $input_reads -sp $template_contig -lc $athena_lc -at $athena_out -o $pangaea_output -c $cluster
     fi
@@ -343,7 +347,7 @@ else
     athena_lc=`realpath "$athena_out_dir/results/olc/flye-input-contigs.fa"`
     athena_out=`realpath "$athena_out_dir/results/olc/athena.asm.fa"`
     if [ $cluster == "metaphlan" ]; then
-        python $root/pangaea.py -i $input_reads -sp $metaspades_contig -lc $athena_lc -at $athena_out -o $pangaea_output
+        python $root/pangaea.py -i $input_reads -sp $metaspades_contig -lc $athena_lc -at $athena_out -o $pangaea_output -m $metaphlan_db
     else
         python $root/pangaea.py -i $input_reads -sp $metaspades_contig -lc $athena_lc -at $athena_out -o $pangaea_output -c $cluster
     fi

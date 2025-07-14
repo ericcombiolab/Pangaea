@@ -74,7 +74,7 @@ def run_cmd(command, log_file=None):
         log_pipe = open(log_file, "a")
     logging.info("command started: " + " ".join(command))
     # run command and check return code and save log to log_file
-    ret = subprocess.run(command, stdout= subprocess.DEVNULL, stderr=log_pipe)
+    ret = subprocess.run(command, stdout=subprocess.PIPE, stderr=log_pipe, stdin=subprocess.PIPE, text=True)
     if ret.returncode:
         logging.error("command failed: " + " ".join(command))
         sys.exit(1)

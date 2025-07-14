@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-while getopts "c:" opt; do
+while getopts "d:" opt; do
     case $opt in
         d)
             metapglan4_DB=$OPTARG
