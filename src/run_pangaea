@@ -2,8 +2,6 @@
 set -o pipefail
 set -e
 
-export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
-
 # >>> conda initialize >>>
 if command -v conda >/dev/null 2>&1; then
     __conda_setup="$(conda 'shell.bash' 'hook' 2> /dev/null)"

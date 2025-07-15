@@ -16,7 +16,7 @@ dependencies:
   - bioconda::seqtk
   - bioconda::bwa
   - bioconda::metabat2
-  - bioconda::metaphlan
+  - bioconda::metaphlan=4.1
   - bioconda::spades
   - bioconda::quickmerge
   - bioconda::htslib
