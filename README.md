@@ -87,6 +87,7 @@ Required arguments:
   -I, --index <file>              Barcode index for Tell-Seq (required if -s is 'tellseq'; this file is provided with the reads)
   -o, --output_dir <dir>           Output directory (required)
 Hybrid assembly (required if -s is 'short'):
+  -m, --metaphlan_db <file>       Metaphlan database for species detection (required if -c is 'metaphlan')
   -l, --longreads <file>          Long reads file
   -H, --hybrid_asm <string>       Hybrid assembler: hybridspades, metaplatanus (default: hybridspades)
   -p, --longreads_type <string>   Long reads type: pacbio or nanopore
@@ -101,12 +102,12 @@ The assembled contigs will be in output_dir/final_asm.fa.
 ## Example of running linked-read assembly
 ```
 cd example/linked_reads_example
-run_pangaea -s 10x -r 20_short_R1.fastq.gz -R 20_short_R2.fastq.gz -o pangaea
+../../src/run_pangaea -s 10x -r atcc_short_R1.fastq.gz -R atcc_short_R2.fastq.gz -o pangaea
 ```
 
 ## Example of running hybrid assembly
 
 ```
 cd example/hybrid_example
-run_pangaea -s short -r atcc_short_R1.fastq.gz -R atcc_short_R2.fastq.gz -l atcc_longreads_small.fastq.gz -p pacbio -o pangaea
+../../src/run_pangaea -s short -r ../linked_reads_example/atcc_short_R1.fastq.gz -R ../linked_reads_example/atcc_short_R2.fastq.gz -l atcc_longreads_small.fastq.gz -p pacbio -o pangaea
 ```
