@@ -1,2 +1,4 @@
 example/linked_reads_example/20_short_R2.fastq.gz filter=lfs diff=lfs merge=lfs -text
 example/linked_reads_example/20_short_R1.fastq.gz filter=lfs diff=lfs merge=lfs -text
+example/linked_reads_example/atcc_short_R1.fastq.gz filter=lfs diff=lfs merge=lfs -text
+example/linked_reads_example/atcc_short_R2.fastq.gz filter=lfs diff=lfs merge=lfs -text
