@@ -161,7 +161,7 @@ def main():
     parser.add_argument("-lc", "--local_assembly", type=str, help="path to local assembly contigs")
     parser.add_argument("-at", "--athena", type=str,  help="path to athena contigs")
     parser.add_argument("-lt", "--low_abd_cut", type=str, default="10,30", help="coverage for low abundance contigs")
-    parser.add_argument("-la", "--low_assembler", type=str, default="spades", help="local assembly method (spades or megahit)")
+    parser.add_argument("-la", "--low_assembler", type=str, default="megahit", help="local assembly method (spades or megahit)")
 
     parser.add_argument("-md", "--model", type=str, default="vae", help="model ( vae)")
     parser.add_argument("-ls", "--loss_type", type=str, default="ce", help="reconstruction loss type (default ce)")
