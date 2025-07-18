@@ -5,7 +5,7 @@ Pangaea is designed for linked-read assembly or hybrid asembly using short- and 
 
 We provide an all-in-one installation script (`build.sh`) that sets up all dependencies, Conda environments, and builds the required tools. The process typically takes 20 minutes to 1 hour, depending on your system and internet speed.
 
-### Quick Start
+### Automated Installation
 ```bash
 git clone https://github.com/ericcombiolab/Pangaea.git
 cd Pangaea
