@@ -335,9 +335,9 @@ if [ -n "$longreads" ] && [ -f "$longreads" ]; then
     athena_lc=`realpath "$athena_out_dir/results/olc/flye-input-contigs.fa"`
     athena_out=`realpath "$athena_out_dir/results/olc/athena.asm.fa"`
     if [ $cluster == "metaphlan" ]; then
-        python $root/pangaea.py -i $input_reads -sp $template_contig -lc $athena_lc -at $athena_out -o $pangaea_output -m $metaphlan_db
+        python $root/pangaea.py -i $input_reads -sp $template_contig -lc $athena_lc -at $athena_out -o $pangaea_output -m $metaphlan_db -t $threads
     else
-        python $root/pangaea.py -i $input_reads -sp $template_contig -lc $athena_lc -at $athena_out -o $pangaea_output -c $cluster
+        python $root/pangaea.py -i $input_reads -sp $template_contig -lc $athena_lc -at $athena_out -o $pangaea_output -c $cluster -t $threads
     fi
     cp "$pangaea_output/final.asm.fa" "$output_dir/final_asm.fa"
 else
@@ -345,9 +345,9 @@ else
     athena_lc=`realpath "$athena_out_dir/results/olc/flye-input-contigs.fa"`
     athena_out=`realpath "$athena_out_dir/results/olc/athena.asm.fa"`
     if [ $cluster == "metaphlan" ]; then
-        python $root/pangaea.py -i $input_reads -sp $metaspades_contig -lc $athena_lc -at $athena_out -o $pangaea_output -m $metaphlan_db
+        python $root/pangaea.py -i $input_reads -sp $metaspades_contig -lc $athena_lc -at $athena_out -o $pangaea_output -m $metaphlan_db -t $threads
     else
-        python $root/pangaea.py -i $input_reads -sp $metaspades_contig -lc $athena_lc -at $athena_out -o $pangaea_output -c $cluster
+        python $root/pangaea.py -i $input_reads -sp $metaspades_contig -lc $athena_lc -at $athena_out -o $pangaea_output -c $cluster -t $threads
     fi
     cp "$pangaea_output/final.asm.fa" "$output_dir/final_asm.fa"
 fi
